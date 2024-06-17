@@ -35,7 +35,9 @@ import Footer from "../components/Footer.vue";
 import { onMounted, reactive, toRefs, ref,watch } from "vue";
 import { useRouter } from "vue-router";
 import { setSessionStorage, getSessionStorage } from "../common.js";
-import axios from "axios";
+import { inject } from 'vue';
+
+const axios = inject('axios');
 
 const router = useRouter();
 
@@ -45,6 +47,9 @@ const appointmentlist=ref([]);
 
 const getappointmentlist = () => {
     // axios.get("/api/appointmentlist?userId="+user.userId)
+    if(user==null){
+        axios.get("/api/orders/getOrdersByUserId?userId=0")
+    }else{
     axios.get("/api/orders/getOrdersByUserId?userId="+user.userId)
     .then(res => {
         appointmentlist.value=res.data.data;
@@ -53,9 +58,11 @@ const getappointmentlist = () => {
     .catch(err => {
         console.log(err);
      });
+    }
 }
 
 onMounted(() => {
+
     getappointmentlist();
 });
 

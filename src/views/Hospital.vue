@@ -55,17 +55,18 @@
 
 <script>
 import { onMounted, reactive, toRefs } from "vue";
-import axios from "axios";
+
 import { useRouter } from "vue-router";
 import { setSessionStorage, getSessionStorage } from "../common.js";
 import Footer from "../components/Footer.vue";
-
+import { inject } from 'vue';
 export default {
     setup() {
         const router = useRouter();
         const state = reactive({
             hospitals: []
         });
+        const axios = inject('axios');
         function getHospital() {
             axios.get("/api/hospital/getHospital").then(res => {
                 for(let i=0;i<res.data.data.length;i++){

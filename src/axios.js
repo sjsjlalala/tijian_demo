@@ -1,6 +1,7 @@
 // axios.js
 import axios from 'axios';
-
+import { useRoute } from 'vue-router';
+const route = useRoute();
 // 创建axios实例
 const axiosInstance = axios.create({
   baseURL: process.env.VUE_APP_API_BASE_URL,
@@ -26,7 +27,8 @@ axiosInstance.interceptors.response.use(response => {
   return response.data;
 }, error => {
   // 处理响应错误，例如错误提示、重定向等
-  if (error.response?.status === 401) {
+  if (error.response?.status === 302) {
+      
     // 处理未授权的情况
   }
   return Promise.reject(error);
