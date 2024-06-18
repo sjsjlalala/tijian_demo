@@ -3,7 +3,7 @@
     <div class="wrapper">
         <header>
             <i class="fa fa-angle-left" onclick="history.go(-1)"></i>
-            <p>用户体检预约</p>
+            <p>用户体检预约1</p>
             <div></div>
         </header>
         <div class="top-ban"></div>
