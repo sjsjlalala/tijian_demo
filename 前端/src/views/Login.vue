@@ -6,12 +6,12 @@
         <section>
             <div class="input-box">
                 <i class="fa fa-user-o"></i>
-                <Usericon/>
+                
                 <input type="text" v-model="users.userId" placeholder="输入手机号">
             </div>
             <div class="input-box">
                 <i class="fa fa-lock"></i>
-                <Pwd/>
+                
                 <input type="password" v-model="users.password" placeholder="输入登录密码">
             </div>
             <div class="reg-box">

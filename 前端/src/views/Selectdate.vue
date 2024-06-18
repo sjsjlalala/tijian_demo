@@ -72,7 +72,7 @@ export default {
       year: curDate.getFullYear(),
       month: curDate.getMonth() + 1,
       calendarArr: [],
-      selectDay: "", //用户选择的预约日期
+      selectDay: "2024-06-18", //用户选择的预约日期
     });
 
     getCalendar();
