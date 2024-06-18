@@ -20,7 +20,7 @@ public class OrdersDetailForDoctor {
     private String orderId;
     private LocalDate orderDate;
 
-    private Map<String, List<Cidetailedreport>> map;
+    private List<Map<String, List<?>>> map;
 
     private List<Overallresult> overallresults;
 
@@ -48,11 +48,11 @@ public class OrdersDetailForDoctor {
         this.orderDate = orderDate;
     }
 
-    public Map<String, List<Cidetailedreport>> getMap() {
+    public List<Map<String, List<?>>> getMap() {
         return map;
     }
 
-    public void setMap(Map<String, List<Cidetailedreport>> map) {
+    public void setMap(List<Map<String, List<?>>> map) {
         this.map = map;
     }
 

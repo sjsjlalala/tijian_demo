@@ -295,7 +295,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
 
     @Override
     public Result getAllOrdersForDoctor(String userId) {
-        List<String> orderIds = new ArrayList<>();
+
         List<OrdersDetailForDoctor> ods = ordersMapper.selectList(new QueryWrapper<Orders>().eq("userId", userId).eq("state", 2))
                 .stream()
                 .map(orders -> {
@@ -308,25 +308,23 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
             return Result.ok();
 
         //2.查询预约单详情
-
-
         ods.stream().forEach(od -> {
-            Map<String, List<Cidetailedreport>> map = new HashMap<>();
+            List<Map<String, List<?>>> map = new ArrayList<>();
             cireportService.list(new QueryWrapper<Cireport>().eq("orderId",od.getOrderId()))
                     .forEach(cireport -> {
                         List<Cidetailedreport> cddrs = cidetailedreportService.query().in("ciId", cireport.getCiId()).eq("orderId",od.getOrderId()).list();
-                        map.put(cireport.getCiName(),cddrs);
+                        Map<String, List<?>> map1 = new HashMap<>();
+                        map1.put("name", Collections.singletonList(cireport.getCiName()));
+                        map1.put("cddrs", cddrs);
+                        map.add(map1);
                     });
                     od.setMap(map);
+            //3.总检报告
             List<Overallresult> result = overallresultService.list(new QueryWrapper<Overallresult>().eq("orderId", od.getOrderId()));
             od.setOverallresults(result);
-
         });
 
-        //3.总检报告
-
-
-
+        //4.按时间排序
 
         return Result.ok(ods, (long) ods.size());
     }
