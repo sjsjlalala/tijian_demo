@@ -73,7 +73,7 @@
     </div>
     <div class="report-content">
         <p>随时随地查看体检报告</p>
-        <div onclick="location.href='reportlist.html'">立即查看</div>
+        <div @click="Toreportlist">立即查看</div>
     </div>
 </div>
 
@@ -186,8 +186,14 @@ export default {
         function toAppiontment() {
              router.push({ path: '/appointment' });
         }
+
+        function Toreportlist() {
+            router.push('/reportlist');
+        }
+
         return {
-            toAppiontment
+            toAppiontment,
+            Toreportlist
         }
     },
     components: { Footer }
