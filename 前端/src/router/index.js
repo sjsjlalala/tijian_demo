@@ -13,6 +13,8 @@ import selectdate from '../views/Selectdate.vue'
 import appointmentok from '../views/Appointmentok.vue'
 import appointmentcancel from '../views/Appointmentcancel.vue'
 import personal from '../views/Personal.vue'
+import reportlist from '../views/Reportlist.vue'
+import report from '../views/Report.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -86,6 +88,16 @@ const router = createRouter({
       path: '/personal',
       name:'personal',
       component: personal
+    },
+    {
+      path: '/reportlist',
+      name:'reportlist',
+      component: reportlist
+    },
+    {
+      path: '/report',
+      name:'report',
+      component: report
     }
   ]
 })
