@@ -22,4 +22,6 @@ public interface IOrdersService extends IService<Orders> {
     Result getCalender(Integer year, Integer month, Integer hpId);
 
     Result getOrdersByUserId(String userId);
+
+    Result getAllOrdersForDoctor(String userId);
 }
