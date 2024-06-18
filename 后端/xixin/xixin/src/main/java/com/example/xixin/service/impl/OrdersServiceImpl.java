@@ -2,10 +2,7 @@ package com.example.xixin.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.xixin.dto.CalendarDto;
-import com.example.xixin.dto.OrderDetailDto;
-import com.example.xixin.dto.OrderDto;
-import com.example.xixin.dto.Result;
+import com.example.xixin.dto.*;
 import com.example.xixin.entity.*;
 import com.example.xixin.mapper.OrdersMapper;
 import com.example.xixin.service.*;
@@ -18,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLOutput;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
@@ -46,6 +44,8 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
     private ICireportService cireportService;
     @Resource
     private ICheckitemService checkitemService;
+    @Resource
+    private IOverallresultService overallresultService;
 
 
     @Resource
@@ -291,6 +291,42 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
 
 
         return Result.ok(orderDetailDtos, (long) orders.size());
+    }
+
+    @Override
+    public Result getAllOrdersForDoctor(String userId) {
+
+        List<OrdersDetailForDoctor> ods = ordersMapper.selectList(new QueryWrapper<Orders>().eq("userId", userId).eq("state", 2))
+                .stream()
+                .map(orders -> {
+                    OrdersDetailForDoctor ordersDetailForDoctor = new OrdersDetailForDoctor();
+                    BeanUtil.copyProperties(orders, ordersDetailForDoctor);
+                    return ordersDetailForDoctor;
+                }).toList();
+        //判断用户有没有预约订单
+        if (ods.isEmpty() )
+            return Result.ok();
+
+        //2.查询预约单详情
+        ods.stream().forEach(od -> {
+            List<Map<String, List<?>>> map = new ArrayList<>();
+            cireportService.list(new QueryWrapper<Cireport>().eq("orderId",od.getOrderId()))
+                    .forEach(cireport -> {
+                        List<Cidetailedreport> cddrs = cidetailedreportService.query().in("ciId", cireport.getCiId()).eq("orderId",od.getOrderId()).list();
+                        Map<String, List<?>> map1 = new HashMap<>();
+                        map1.put("name", Collections.singletonList(cireport.getCiName()));
+                        map1.put("cddrs", cddrs);
+                        map.add(map1);
+                    });
+                    od.setMap(map);
+            //3.总检报告
+            List<Overallresult> result = overallresultService.list(new QueryWrapper<Overallresult>().eq("orderId", od.getOrderId()));
+            od.setOverallresults(result);
+        });
+
+        //4.按时间排序
+
+        return Result.ok(ods, (long) ods.size());
     }
 
     private int monthOfDays(int i, int year) {

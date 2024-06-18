@@ -46,4 +46,10 @@ public class OrdersController {
     {
         return ordersService.getOrdersByUserId(userId);
     }
+
+    @GetMapping("/getAllOrdersForDoctor")
+    public Result getAllOrdersForDoctor(String userId)
+    {
+        return ordersService.getAllOrdersForDoctor(userId);
+    }
 }
