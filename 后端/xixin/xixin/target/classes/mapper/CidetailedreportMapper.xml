@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.xixin.mapper.CidetailedreportMapper">
+
+    <insert id="saveAll" parameterType="java.util.List">
+        INSERT INTO cidetailedreport
+        (maxrange, normalValue, value, orderId, minrange, name, unit, normalValueString, type, isError, ciId)
+        VALUES
+        <foreach collection="list" item="dto" separator=",">
+            (#{dto.maxrange}, #{dto.normalValue}, #{dto.value}, #{dto.orderId}, #{dto.minrange}, #{dto.name}, #{dto.unit}, #{dto.normalValueString}, #{dto.type}, #{dto.isError}, #{dto.ciId})
+        </foreach>
+    </insert>
+    <select id="selectBySmId" resultType="com.example.xixin.entity.Cidetailedreport">
+        select * from checkitemdetailed where ciId IN (select ciId from setmealdetailed where smId = #{smId})
+    </select>
+</mapper>
