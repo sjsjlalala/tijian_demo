@@ -17,7 +17,7 @@ public interface IOrdersService extends IService<Orders> {
 
     Result getList(Integer pageNum, Integer pageSize);
 
-    Result searchList(UserVo userVo);
+    Result searchList(UserVo userVo, Integer pageNum, Integer pageSize);
 
     Result getOrder(Integer orderId);
 
