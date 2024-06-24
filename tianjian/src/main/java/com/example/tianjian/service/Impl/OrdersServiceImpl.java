@@ -3,6 +3,8 @@ package com.example.tianjian.service.Impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.tianjian.dto.OrdersDto;
@@ -149,25 +151,50 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
 
 
     @Override
-    public Result searchList(UserVo userVo) {
-        OrdersDto ordersDto = BeanUtil.copyProperties(userVo, OrdersDto.class);
-        List<OrdersDto> ordersDtoList1 = new LinkedList<>();
-        Long total = 0L;
-        List<OrdersDto> ordersDtoList = getAllOrdersAsDtoList();
-        for (OrdersDto ordersDto1 : ordersDtoList){
-            if ((ordersDto.getOrderDate() == null || (ordersDto1.getOrderDate().equals(ordersDto.getOrderDate())))
-            && (ordersDto.getUserId() == null || ordersDto1.getUserId().equals(ordersDto.getUserId()))
-            && (ordersDto.getRealName() == null || ordersDto1.getRealName().equals(ordersDto.getRealName()))
-            && (ordersDto.getSmName() == null || ordersDto1.getSmName().equals(ordersDto.getSmName()))
-            && (ordersDto.getSex() == null || ordersDto1.getSex().equals(ordersDto.getSex()))
-            && (ordersDto.getState() == null || ordersDto1.getState().equals(ordersDto.getState()))) {
-                // 你的逻辑代码
-                ordersDtoList1.add(ordersDto1);
-                total++;
+    public Result searchList(UserVo userVo, Integer pageNum, Integer pageSize) {
+        // 创建分页对象
+        Page<Orders> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<Users> usersQueryWrapper = new QueryWrapper<Users>().eq(StringUtils.isNotBlank(userVo.getUserId()), "userId", userVo.getUserId())
+                .eq(StringUtils.isNotBlank(userVo.getRealName()),"realName", userVo.getRealName())
+                .eq(userVo.getSex() != null, "sex", userVo.getSex());
+        List<String> userIds = usersService.list(usersQueryWrapper).stream()
+                .map(Users::getUserId)
+                .collect(Collectors.toList());
+
+        QueryWrapper<Orders> ordersQueryWrapper = new QueryWrapper<Orders>()
+                .eq(userVo.getSmId() != null,"smId", userVo.getSmId())
+                .eq(userVo.getOrderDate() != null,"orderDate", userVo.getOrderDate())
+                .eq(userVo.getState() != null,"state", userVo.getState())
+                .in("userId", userIds)
+                .orderByDesc("orderDate");
+        // 执行分页查询
+        IPage<Orders> ordersIPage = ordersMapper.selectPage(page, ordersQueryWrapper);
+        // 获取分页数据
+        List<Orders> records = ordersIPage.getRecords();
+        // 将Orders转换为OrdersDto并设置额外信息
+        List<OrdersDto> ordersDtoList = records.stream().map(order -> {
+            OrdersDto ordersDto = new OrdersDto();
+            BeanUtil.copyProperties(order, ordersDto);
+            Users users = usersService.getById(order.getUserId());
+            if (users != null) {
+                ordersDto.setRealName(users.getRealName());
+                ordersDto.setSex(users.getSex());
             }
-        }
-        return Result.ok(ordersDtoList1, total);
+            Hospital hospital = hospitalService.getById(order.getHpId());
+            if (hospital != null) {
+                ordersDto.setHpName(hospital.getName());
+            }
+            Setmeal setmeal = setmealService.getById(order.getSmId());
+            if (setmeal != null) {
+                ordersDto.setSmName(setmeal.getName());
+            }
+            return ordersDto;
+        }).collect(Collectors.toList());
+        Integer maxPageNum = records.size();
+        // 返回分页结果，包含total（总记录数）和maxPageNum（当前页数据数量）
+        return Result.ok(ordersDtoList, ordersIPage.getTotal(), maxPageNum);
     }
+
 
     @Override
     public Result getOrder(Integer orderId, Integer smId) {

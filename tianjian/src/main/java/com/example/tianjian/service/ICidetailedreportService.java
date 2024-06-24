@@ -14,5 +14,5 @@ import com.example.tianjian.util.Result;
  */
 public interface ICidetailedreportService extends IService<Cidetailedreport> {
 
-    Result getList();
+    Result getList(Integer orderId);
 }

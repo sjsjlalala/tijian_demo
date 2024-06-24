@@ -1,7 +1,10 @@
 package com.example.tianjian.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.tianjian.dto.OrdersDto;
 import com.example.tianjian.entity.Orders;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,4 @@ import com.example.tianjian.entity.Orders;
  * @since 2024-06-13
  */
 public interface OrdersMapper extends BaseMapper<Orders> {
-
 }

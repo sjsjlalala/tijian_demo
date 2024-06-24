@@ -23,8 +23,8 @@ public class CidetailedreportController {
     private ICidetailedreportService cidetailedreportService;
 
     @GetMapping("/getList")
-    public Result getList()
+    public Result getList(Integer orderId)
     {
-        return cidetailedreportService.getList();
+        return cidetailedreportService.getList(orderId);
     }
 }

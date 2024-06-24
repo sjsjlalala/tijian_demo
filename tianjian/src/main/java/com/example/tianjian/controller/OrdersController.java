@@ -28,8 +28,8 @@ public class OrdersController {
     }
 
     @GetMapping("/searchList")
-    public Result searchList(@RequestBody UserVo userVo) {
-        return ordersService.searchList(userVo);
+    public Result searchList(@RequestBody UserVo userVo, Integer pageNum, Integer pageSize) {
+        return ordersService.searchList(userVo,pageNum,pageSize);
     }
 
     @GetMapping("/getorder")
