@@ -5,7 +5,7 @@
 
 
       <el-dropdown size="large" split-button type="primary">  
-        <h2>医生：{{  }}</h2>
+        <h2>医生：{{ state.doctor.realName }}</h2>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
@@ -128,10 +128,10 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="套餐类型">
-        <el-select v-model="state.selectForm.smId" placeholder="套餐类型">
-          <el-option v-for="item in setmealOptions" :key="item.value" :label="item.label"
-            :value="item.value"></el-option>
-        </el-select>
+            <el-select v-model="state.selectForm.smId" placeholder="套餐类型">
+              <el-option v-for="setmeal in state.setmealArr" :key="setmeal.smId" :label="setmeal.name"
+                :value="setmeal.smId"></el-option>
+            </el-select>
       </el-form-item>
       <el-form-item label="体检日期">
         <el-date-picker v-model="state.selectForm.orderDate" type="date" placeholder="体检日期" style="width: 100%"
@@ -194,7 +194,7 @@ const onClose = () => {
 //退出登录
 const logout = () => {
   setSessionStorage('doctor', null);
-  axios.delete('logout')
+  axios.get('/api/doctor/exit')
   router.push('/')
 }
 
@@ -209,9 +209,9 @@ const handleClose = (done) => {
 
 // 定义方法
 const listSetmeal = () => {
-  axios.post('setmeal/listSetmeal')
+  axios.get('/api/setmeal/getList')
     .then(response => {
-      state.setmealArr = response.data;
+      state.setmealArr = response.data.data;
     })
     .catch(error => {
       console.error(error);
@@ -221,9 +221,9 @@ const listSetmeal = () => {
 const listOrders = (pageNum) => {
   state.selectForm.pageNum = pageNum;
   state.selectForm.maxPageNum = 10;
-  axios.post('https://a8d1bf54-2a67-4630-be75-bf7ce1c430ad.mock.pstmn.io/list', state.selectForm)
+  axios.post('/api/orders/getlist' ,state.selectForm)
     .then(response => {
-      state.ordersPageResponseDto = response.data;
+      state.ordersPageResponseDto = response.data.data;
     })
     .catch(error => {
       console.error(error);
@@ -231,10 +231,9 @@ const listOrders = (pageNum) => {
 };
 
 const ciReport = (row) => {
-  axios.post('ciReport/createReportTemplate', {
-    orderId: row.orderId,
-    smId: row.smId,
-  })
+  axios.post('ciReport/createReportTemplate?orderId='+row.orderId
+    
+  )
     .then(response => {
       if (response.data === 1) {
         router.push({ path: '/ordersContent', query: { orderId: row.orderId } });

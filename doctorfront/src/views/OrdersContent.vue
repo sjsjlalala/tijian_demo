@@ -28,19 +28,19 @@
             <template #label>
               <div class="cell-item">真实姓名</div>
             </template>
-            {{ orders.users.realName }}
+            {{ orders.realName }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">性别</div>
             </template>
-            {{ orders.users.sex == 1 ? "男" : "女" }}
+            {{ orders.sex == 1 ? "男" : "女" }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">套餐类型</div>
             </template>
-            {{ orders.setmeal.name }}
+            {{ orders.smName }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
@@ -57,7 +57,7 @@
         <div class="main-box">
           <el-collapse>
             <el-collapse-item
-              :title="ci.ciName"
+              :title="ci.name"
               v-for="(ci, ciIndex) in ciReportArr"
               :key="ci.ciId"
             >
@@ -220,7 +220,7 @@ import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import { getSessionStorage } from '../common.js'; // 确保路径正确
 
-axios.defaults.baseURL = "http://localhost:8088/tijiancms/";
+
 
 const router = useRouter();
 const route = useRoute();
@@ -244,6 +244,7 @@ const dialogVisible = ref(false);
 
 // 初始化
 onMounted(async () => {
+  console.log("初始化");
 await getOrdersById();
 await listCiReport();
 await listOverallResultByOrderId();
@@ -252,8 +253,10 @@ await listOverallResultByOrderId();
 // 获取体检预约信息
 async function getOrdersById() {
 try {
-  const response = await axios.post("orders/getOrdersById", { orderId: orderId.value });
-  orders.value = response.data;
+  orderId.value =2;
+  const response = await axios.get("/api/orders/getorder?orderId="+orderId.value );
+      orders.value = response.data.data;
+      console.log("orders",orders.value);
 } catch (error) {
   console.error('Error fetching orders by ID:', error);
 }
@@ -262,8 +265,9 @@ try {
 // 获取体检报告检查项信息
 async function listCiReport() {
 try {
-  const response = await axios.post("ciReport/listCiReport", { orderId: orderId.value });
-  ciReportArr.value = response.data;
+  const response = await axios.get("/api/cidetailedreport/getList?orderId=2");
+  ciReportArr.value = response.data.data;
+  console.log("ciReportArr",ciReportArr.value);
 } catch (error) {
   console.error('Error listing CI report:', error);
 }

@@ -23,7 +23,7 @@ public class OrdersController {
     private IOrdersService ordersService;
 
     @RequestMapping("/getlist")
-    public Result getList(Integer pageNum, Integer pageSize) {
+    public Result getList(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam("maxPageNum") Integer pageSize) {
         return ordersService.getList(pageNum, pageSize);
     }
 
@@ -33,8 +33,8 @@ public class OrdersController {
     }
 
     @GetMapping("/getorder")
-    public Result getOrder(Integer orderId,Integer smId) {
-        return ordersService.getOrder(orderId,smId);
+    public Result getOrder(Integer orderId) {
+        return ordersService.getOrder(orderId);
     }
 
     @PutMapping("/submit")

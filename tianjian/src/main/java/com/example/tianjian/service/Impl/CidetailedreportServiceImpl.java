@@ -23,8 +23,8 @@ import java.util.List;
 public class CidetailedreportServiceImpl extends ServiceImpl<CidetailedreportMapper, Cidetailedreport> implements ICidetailedreportService {
 
     @Override
-    public Result getList() {
-        QueryChainWrapper<Cidetailedreport> queryChainWrapper = this.query().orderByAsc("ciId");
+    public Result getList(Integer orderId) {
+        QueryChainWrapper<Cidetailedreport> queryChainWrapper = this.query().eq("orderId", orderId).orderByAsc("ciId");
         List<Cidetailedreport> cidetailedreports = BeanUtil.copyToList(queryChainWrapper.list(), Cidetailedreport.class);
         return Result.ok(cidetailedreports, this.count());
     }

@@ -59,9 +59,9 @@ const submitForm = () => {
 };
 
 const login = () => {
-  axios.post('doctor/getDoctorByCodeByPass', state.loginForm)
+  axios.post('/api/doctor/login', state.loginForm)
     .then(response => {
-      const doctor = response.data;
+      const doctor = response.data.data;
       if (doctor) {
         setSessionStorage('doctor', doctor);
         router.push('/ordersList');

@@ -19,7 +19,7 @@ public interface IOrdersService extends IService<Orders> {
 
     Result searchList(UserVo userVo);
 
-    Result getOrder(Integer orderId, Integer smId);
+    Result getOrder(Integer orderId);
 
     Result submit(int cidrId, int isError, String value);
 

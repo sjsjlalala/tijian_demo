@@ -170,12 +170,12 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
     }
 
     @Override
-    public Result getOrder(Integer orderId, Integer smId) {
+    public Result getOrder(Integer orderId) {
         stringRedisTemplate.opsForValue().set("now:orderId", orderId.toString());
         OrdersDto ordersDto = new OrdersDto();
         List<OrdersDto> ordersDtoList = getAllOrdersAsDtoList();
         for(OrdersDto ordersDto1 : ordersDtoList){
-            if(ordersDto1.getOrderId().equals(orderId) && ordersDto1.getSmId().equals(smId)){
+            if(ordersDto1.getOrderId().equals(orderId)){
                 ordersDto=ordersDto1;
             }
         }
