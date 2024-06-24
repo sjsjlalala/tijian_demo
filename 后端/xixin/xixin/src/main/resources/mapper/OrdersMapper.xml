@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.xixin.mapper.OrdersMapper">
+
+
+    <select id="selectUsedCount" parameterType="java.util.Map" resultType="com.example.xixin.dto.CalendarDto">
+            <foreach collection="list" item = "dot" separator="union">
+                select count(*) as used,
+                        #{dot.date} as date
+                from orders
+                where hpId = #{dot.hpId}
+                and orderDate = #{dot.date}
+            </foreach>
+    </select>
+</mapper>
