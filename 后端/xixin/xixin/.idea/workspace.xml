@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="74e87240-3d29-4c30-b58a-5c444c8790b9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/xixin/util/SendSms.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../前端/src/views/Report.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../../../前端/src/views/Report.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../前端/src/views/Reportlist.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../../../前端/src/views/Reportlist.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/xixin/config/RedissonConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/xixin/config/RedissonConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/xixin/controller/HospitalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/xixin/controller/HospitalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/xixin/controller/OrdersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/xixin/controller/OrdersController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/xixin/controller/SetmealController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/xixin/controller/SetmealController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/xixin/controller/UsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/xixin/controller/UsersController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/xixin/dto/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/xixin/dto/Result.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/xixin/interceptor/LoginInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/xixin/interceptor/LoginInterceptor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/xixin/service/impl/OrdersServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/xixin/service/impl/OrdersServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yaml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JUnit5 Test Class" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="D:\JavaAll\apache-maven-3.9.6\local-repo" />
+        <option name="mavenHome" value="$PROJECT_DIR$/../../../apache-maven-3.9.6" />
+        <option name="userSettingsFile" value="D:\JavaAll\apache-maven-3.9.6\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2ho9Ndxa3eYkFfupGQ2yb0hKZbW" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/JavaAll/git/tijian_demo/后端/xixin/xixin/pom.xml&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.3505747&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.javacompiler&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ]
+  }
+}</component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.example.xixin.service.impl" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.xixin.dto" />
+      <recent name="com.example.xixin" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.SendSms">
+    <configuration name="SendSms" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.xixin.util.SendSms" />
+      <module name="xixin" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.xixin.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrdersServiceImplTest.getCalender (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="xixin" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.xixin.service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.xixin.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="com.example.xixin.service.impl.OrdersServiceImplTest" />
+      <option name="METHOD_NAME" value="getCalender" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrdersServiceImplTest.getCalender (2)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="xixin" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="com.example.service.impl.OrdersServiceImplTest" />
+      <option name="METHOD_NAME" value="getCalender" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrdersServiceImplTest.getCalender (3)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="xixin" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.xixin.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.xixin.service" />
+      <option name="MAIN_CLASS_NAME" value="com.example.xixin.service.OrdersServiceImplTest" />
+      <option name="METHOD_NAME" value="getCalender" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrdersServiceImplTest.getCalender" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="xixin" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.xixin.service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.xixin.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="com.example.xixin.service.impl.OrdersServiceImplTest" />
+      <option name="METHOD_NAME" value="getCalender(java.lang.Integer,java.lang.Integer,java.lang.Integer)" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="XixinApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="xixin" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.xixin.XixinApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.SendSms" />
+        <item itemvalue="JUnit.OrdersServiceImplTest.getCalender (3)" />
+        <item itemvalue="JUnit.OrdersServiceImplTest.getCalender (2)" />
+        <item itemvalue="JUnit.OrdersServiceImplTest.getCalender (1)" />
+        <item itemvalue="JUnit.OrdersServiceImplTest.getCalender" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="74e87240-3d29-4c30-b58a-5c444c8790b9" name="Changes" comment="" />
+      <created>1718249528499</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1718249528499</updated>
+      <workItem from="1718249529560" duration="11976000" />
+      <workItem from="1718274267985" duration="3817000" />
+      <workItem from="1718290588931" duration="6000" />
+      <workItem from="1718331347784" duration="20018000" />
+      <workItem from="1718370290501" duration="2000" />
+      <workItem from="1718370301741" duration="3000" />
+      <workItem from="1718423393489" duration="24000" />
+      <workItem from="1718591346607" duration="20682000" />
+      <workItem from="1718619517798" duration="9211000" />
+      <workItem from="1718628799524" duration="9158000" />
+      <workItem from="1718672153035" duration="5137000" />
+      <workItem from="1718677868268" duration="19694000" />
+      <workItem from="1718708612045" duration="2730000" />
+      <workItem from="1718765409921" duration="6086000" />
+      <workItem from="1718774654097" duration="2548000" />
+      <workItem from="1718860688688" duration="5364000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/example/xixin/service/impl/OrdersServiceImplTest.java</url>
+          <line>82</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/xixin/service/impl/OrdersServiceImpl.java</url>
+          <line>115</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
