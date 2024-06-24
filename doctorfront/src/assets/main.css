@@ -1,0 +1,24 @@
+@import './base.css';
+
+
+/* 重置默认的margin 和 padding 以确保全屏效果 */
+html, body, #app {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+  }
+  
+  /* 确保body和html铺满屏幕，并将应用容器(app)也设置为全屏 */
+  body, html {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* 如果app是一个特定的div，请确保它也铺满父元素 */
+  #app {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box; /* 包含边框和内边距在宽度和高度计算中 */
+  }
