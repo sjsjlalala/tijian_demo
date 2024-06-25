@@ -14,6 +14,7 @@ import com.example.tianjian.service.ICidetailedreportService;
 import com.example.tianjian.service.IOrdersService;
 import com.example.tianjian.service.IOverallresultService;
 import com.example.tianjian.util.Result;
+import com.example.tianjian.vo.CidetailedreportVo;
 import com.example.tianjian.vo.UserVo;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -210,31 +211,60 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
     }
 
     @Override
-    public Result submit(int cidrId, int isError, String value) {
-        if(isError==0){
-            Cidetailedreport cidetailedreport = cidetailedreportService.getById(cidrId);
-            cidetailedreport.setValue(value);
-            cidetailedreportService.updateById(cidetailedreport);
-        }else{
-            Cidetailedreport cidetailedreport = cidetailedreportService.getById(cidrId);
-            cidetailedreport.setValue(value);
-            cidetailedreport.setIsError(1);
-            cidetailedreportService.updateById(cidetailedreport);
+    public Result submit(List<CidetailedreportVo> cidetailedreportVos) {
+        for (int i=0;i<cidetailedreportVos.size();i++) {
+            CidetailedreportVo cidetailedreportVo = cidetailedreportVos.get(i);
+            if (cidetailedreportVo.getIsError() == 0) {
+                Cidetailedreport cidetailedreport = cidetailedreportService.getById(cidetailedreportVo.getCidrId());
+                cidetailedreport.setValue(cidetailedreportVo.getValue());
+                cidetailedreportService.updateById(cidetailedreport);
+            } else {
+                Cidetailedreport cidetailedreport = cidetailedreportService.getById(cidetailedreportVo.getCidrId());
+                cidetailedreport.setValue(cidetailedreportVo.getValue());
+                cidetailedreport.setIsError(1);
+                cidetailedreportService.updateById(cidetailedreport);
+            }
         }
         return Result.ok("保存成功");
     }
 
     @Override
-    public Result submitall(int orId, String title, String content) {
-        Overallresult overallresult = new Overallresult();
-        String s = stringRedisTemplate.opsForValue().get("now:orderId");
-        if(s!=null){
-            overallresult.setOrderId(Integer.parseInt(s));
+    public Result submitall(Integer orId, String title, String content,Integer orderId) {
+        if(orderId!=null){
+            Overallresult overallresult = new Overallresult();
             overallresult.setTitle(title);
             overallresult.setContent(content);
-            overallresult.setOrId(orId);
+            overallresult.setOrderId(orderId);
             overallresultService.save(overallresult);
         }
+        else if(orId!=null){
+            Overallresult overallresult = overallresultService.getById(orId);
+            overallresult.setTitle(title);
+            overallresult.setContent(content);
+            overallresultService.updateById(overallresult);
+        }
         return Result.ok("保存成功");
+    }
+
+    @Override
+    public Result getAll(Integer orderId) {
+        QueryChainWrapper<Overallresult> orderId1 = overallresultService.query().eq("orderId", orderId);
+        return Result.ok(orderId1.list(), orderId1.count());
+    }
+
+    @Override
+    public Result deleteall(Integer orId) {
+        overallresultService.removeById(orId);
+        return Result.ok("删除成功");
+    }
+
+    @Override
+    public Result updateall(Integer orderId) {
+        if(orderId!=null){
+            Orders orders = getById(orderId);
+            orders.setState(2);
+            updateById(orders);
+        }
+        return null;
     }
 }

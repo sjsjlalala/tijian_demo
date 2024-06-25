@@ -105,7 +105,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination background layout="prev, pager, next, total" :total="state.ordersPageResponseDto.total"
+        <el-pagination background layout="prev, pager, next, total" :total="state.ordersPageResponseDto.total  "
           :page-size="state.ordersPageResponseDto.maxPageNum" style="margin-top: 20px" @current-change="currentChange">
         </el-pagination>
       </el-main>
@@ -219,11 +219,12 @@ const listSetmeal = () => {
 };
 
 const listOrders = (pageNum) => {
-  state.selectForm.pageNum = pageNum;
-  state.selectForm.maxPageNum = 10;
-  axios.post('/api/orders/getlist' ,state.selectForm)
+  
+  
+  axios.post('/api/orders/searchList?pageNum='+pageNum+'&maxPageNum=10' ,state.selectForm)
     .then(response => {
-      state.ordersPageResponseDto = response.data.data;
+      state.ordersPageResponseDto = response.data;
+      console.log(state.ordersPageResponseDto);
     })
     .catch(error => {
       console.error(error);
@@ -231,11 +232,11 @@ const listOrders = (pageNum) => {
 };
 
 const ciReport = (row) => {
-  axios.post('ciReport/createReportTemplate?orderId='+row.orderId
+  axios.get('/api/orders/getorder?orderId='+row.orderId
     
   )
     .then(response => {
-      if (response.data === 1) {
+      if (response.data != null) {
         router.push({ path: '/ordersContent', query: { orderId: row.orderId } });
       } else {
         alert('生成报告模板失败！');
@@ -248,7 +249,9 @@ const ciReport = (row) => {
 
 const doSelect = () => {
   console.log(state.selectForm);
+  showForm.value = false;
   listOrders(1);
+
 };
 
 const currentChange = (pageNum) => {

@@ -39,26 +39,27 @@ public class CidetailedreportServiceImpl extends ServiceImpl<CidetailedreportMap
 
     @Override
     public Result getList(Integer orderId) {
-<<<<<<< HEAD
-        QueryChainWrapper<Cidetailedreport> queryChainWrapper = this.query().eq("orderId", orderId).orderByAsc("ciId");
+
+       /* QueryChainWrapper<Cidetailedreport> queryChainWrapper = this.query().eq("orderId", orderId).orderByAsc("ciId");
         List<Cidetailedreport> cidetailedreports = BeanUtil.copyToList(queryChainWrapper.list(), Cidetailedreport.class);
-        return Result.ok(cidetailedreports, this.count());
-=======
+        return Result.ok(cidetailedreports, this.count());*/
+
         QueryWrapper<Cireport> query = new QueryWrapper<Cireport>().eq("orderId", orderId);
         List<Integer> ciIds = cireportService.list(query).stream().map(Cireport::getCiId).collect(Collectors.toList());
         System.out.println(ciIds);
         List<CidetailedreportDto> cidetailedreportDtos = new ArrayList<>();
         for(int i = 0; i < ciIds.size(); i++){
             Integer ciId = ciIds.get(i);
+
             CidetailedreportDto cidetailedreportDto = new CidetailedreportDto();
             cidetailedreportDto.setCiName(checkitemService.getById(ciIds.get(i)).getCiName());
-            QueryWrapper<Cidetailedreport> query1 = new QueryWrapper<Cidetailedreport>().eq("ciId", ciIds.get(i));
+            cidetailedreportDto.setCiId(ciId);
+            QueryWrapper<Cidetailedreport> query1 = new QueryWrapper<Cidetailedreport>().eq("ciId", ciIds.get(i)).eq("orderId", orderId);
             cidetailedreportDto.setCidetailedreports(this.list(query1));
             cidetailedreportDtos.add(cidetailedreportDto);
-            System.out.println(cidetailedreportDtos);
-            System.out.println("/n");
+
         }
         return Result.ok(cidetailedreportDtos);
->>>>>>> b55bfb3b6a8f2500164ec1d0f536382b4d7fee69
+
     }
 }

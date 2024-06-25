@@ -2,7 +2,7 @@
   <el-container style="height: 100%">
     <el-header>
       <h1>健康守护360°智慧体检平台</h1>
-      <p>医生：{{11 }}</p>
+      <p>医生：{{doctor.realName }}</p>
     </el-header>
     <el-container>
       <el-aside width="260px">
@@ -57,7 +57,7 @@
         <div class="main-box">
           <el-collapse>
             <el-collapse-item
-              :title="ci.name"
+              :title="ci.ciName"
               v-for="(ci, ciIndex) in ciReportArr"
               :key="ci.ciId"
             >
@@ -65,7 +65,7 @@
                 <el-col
                   :span="12"
                   style="box-sizing: border-box; padding: 6px 10px"
-                  v-for="(cidr, cidrIndex) in ci.cidrList"
+                  v-for="(cidr, cidrIndex) in ci.cidetailedreports"
                   :key="cidr.ciId"
                 >
                   <span
@@ -90,7 +90,7 @@
                     size="small"
                     :placeholder="cidr.name"
                     v-if="cidr.type != 4"
-                    v-model="ciReportArr[ciIndex].cidrList[cidrIndex].value"
+                    v-model="cidr.value"
                     @blur="cidrCheckByBlur(ciIndex, cidrIndex)"
                   />
                   <el-input
@@ -98,7 +98,7 @@
                     type="textarea"
                     :rows="2"
                     :placeholder="cidr.name"
-                    v-model="ciReportArr[ciIndex].cidrList[cidrIndex].value"
+                    v-model="cidr.value"
                     v-if="cidr.type == 4"
                   />
 
@@ -119,7 +119,7 @@
             </el-collapse-item>
           </el-collapse>
 
-          <el-card class="box-card" style="margin-top: 20px">
+          <el-card class="box-card" style="margin-top: 20px;width: 100%">
             <template #header>
               <div class="card-header">
                 <span>总检结论</span>
@@ -129,7 +129,7 @@
                 >
               </div>
             </template>
-            <div>
+            <div >
               <el-table :data="overallResultArr" style="width: 100%">
                 <el-table-column prop="code" label="编号" width="60" />
                 <el-table-column
@@ -143,14 +143,14 @@
                     <el-button
                       type="text"
                       size="small"
-                      @click="toUpdateOverallResult(scope.row)"
+                      @click="toUpdateOverallResult(scope.row.orId)"
                       v-if="orders.state==1"
                       >更新</el-button
                     >
                     <el-button
                       type="text"
                       size="small"
-                      @click="removeOverallResult(scope.row)"
+                      @click="removeOverallResult(scope.row.orId)"
                       v-if="orders.state==1"
                       >删除</el-button
                     >
@@ -162,16 +162,16 @@
                 ref="formRef"
                 :model="overallResultForm"
                 style="margin-top: 20px"
-                label-width="120px"
+                label-width="10px"
                 v-if="orders.state==1"
               >
-                <el-form-item label="总检结论标题">
+                <el-form-item >
                   <el-input
                     v-model="overallResultForm.title"
                     placeholder="总检结论标题"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="总检结论内容">
+                <el-form-item >
                   <el-input
                     v-model="overallResultForm.content"
                     :rows="2"
@@ -232,8 +232,10 @@ const orders = ref({});
 const ciReportArr = ref([]);
 const overallResultArr = ref([]);
 const overallResultForm = reactive({
+  orId: '',
 title: '',
 content: '',
+
 });
 const updateOverallResultForm = reactive({
 orId: '',
@@ -276,8 +278,8 @@ try {
 // 获取总检结论项信息
 async function listOverallResultByOrderId() {
 try {
-  const response = await axios.post("overallResult/listOverallResultByOrderId", { orderId: orderId.value });
-  overallResultArr.value = response.data.map((item, index) => ({
+  const response = await axios.get("/api/orders/getall?orderId="+orderId.value );
+  overallResultArr.value = response.data.data.map((item, index) => ({
     ...item,
     code: index + 1,
   }));
@@ -310,7 +312,7 @@ if (cidr.type === 1) {
 
 // 更新检查项明细报告
 async function updateCiDetailedReport(ciIndex) {
-const cidrArr = ciReportArr.value[ciIndex].cidrList;
+const cidrArr = ciReportArr.value[ciIndex].cidetailedreports;
 for (const cidr of cidrArr) {
   if (!cidr.value) {
     alert(`${cidr.name} 不能为空！`);
@@ -329,7 +331,7 @@ const arr = cidrArr.map(cidr => ({
 }));
 
 try {
-  const response = await axios.post("ciDetailedReport/updateCiDetailedReport", arr);
+  const response = await axios.put("/api/orders/submit", arr);
   if (response.data > 0) {
     alert("保存成功！");
     listCiReport();
@@ -348,11 +350,12 @@ if (!overallResultForm.title) {
   return;
 }
 
-overallResultForm.orderId = orderId.value;
+
 try {
-  const response = await axios.post("overallResult/saveOverallResult", overallResultForm);
-  if (response.data > 0) {
+  const response = await axios.put("/api/orders/submitall?orderId="+orderId.value+"&title="+overallResultForm.title+"&content="+overallResultForm.content);
+  if (response.data.success = 'true') {
     listOverallResultByOrderId();
+    resetOverallResult();
   } else {
     alert("总检结论项添加失败！");
   }
@@ -374,8 +377,8 @@ if (!confirm("确认删除此数据吗？")) {
 }
 
 try {
-  const response = await axios.post("overallResult/removeOverallResult", { orId });
-  if (response.data > 0) {
+  const response = await axios.delete("/api/orders/deleteall?orId="+orId);
+  if (response.data.success = 'true') {
     listOverallResultByOrderId();
   } else {
     alert("总检结论项删除失败！");
@@ -388,8 +391,9 @@ try {
 // 更新总检结论项
 async function updateOverallResult() {
 try {
-  const response = await axios.post("overallResult/updateOverallResult", updateOverallResultForm);
-  if (response.data > 0) {
+  const response = await axios.put("/api/orders/submitall?orId="+updateOverallResultForm.orId+"&title="+updateOverallResultForm.title+"&content="+updateOverallResultForm.content);
+  if (response.data.data = 'true') {
+    
     listOverallResultByOrderId();
     dialogVisible.value = false;
   } else {
@@ -400,6 +404,12 @@ try {
 }
 }
 
+function toUpdateOverallResult(row) {
+      dialogVisible.value = true;
+      //这里不能直接赋值为row，必须使用深拷贝。否则更新数据与原数据是绑定的
+      updateOverallResultForm.orId = JSON.parse(JSON.stringify(row));
+    }
+
 // 归档体检套餐总检结果报告
 async function updateOrdersState() {
 if (!confirm("总检结论报告归档前，请务必确认是否所有检查项数据都正确？")) {
@@ -407,11 +417,8 @@ if (!confirm("总检结论报告归档前，请务必确认是否所有检查项
 }
 
 try {
-  const response = await axios.post("orders/updateOrdersState", {
-    orderId: orderId.value,
-    state: 2,
-  });
-  if (response.data > 0) {
+  const response = await axios.put("/api/orders/updateall?orderId="+orderId.value);
+  if (response.data = 'true') {
     router.push({ name: 'OrdersList' });
   } else {
     alert("总检结论报告归档失败！");
@@ -529,6 +536,11 @@ html {
 .el-date-editor .el-input__inner:focus {
   border-color: $primary-color !important;
   outline: none;
+}
+.el-main {
+  /* 限制主区域的最大高度，使其在达到此高度时出现滚动条 */
+  max-height: calc(100vh - 200px); /* 举例：减去头部和底部高度，根据实际情况调整 */
+  overflow-y: auto; /* 当内容溢出时，自动显示垂直滚动条 */
 }
 
 //图标

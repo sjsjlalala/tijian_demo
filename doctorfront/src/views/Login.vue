@@ -29,8 +29,9 @@
 import { reactive, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { setSessionStorage } from '../common.js';
+import { inject } from 'vue';
 
-import axios from 'axios';
+const axios = inject('axios');
 
 const router = useRouter();
 
@@ -62,6 +63,7 @@ const login = () => {
   axios.post('/api/doctor/login', state.loginForm)
     .then(response => {
       const doctor = response.data.data;
+
       if (doctor) {
         setSessionStorage('doctor', doctor);
         router.push('/ordersList');

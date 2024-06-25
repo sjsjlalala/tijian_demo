@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 public class CidetailedreportDto {
+    private Integer ciId;
     private String ciName;
     private List<Cidetailedreport> cidetailedreports;
 }
