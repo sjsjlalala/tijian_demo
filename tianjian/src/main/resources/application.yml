@@ -50,5 +50,17 @@ mybatis-plus:
       logic-delete-value: 1
   #所对应的 XML 文件位置
   #mapper-locations: classpath*:/mapper/*Mapper.xml
+hm:
+  jwt:
+    location: classpath:hmall.jks
+    alias: hmall
+    password: hmall123
+    tokenTTL: 30m
+  auth:
+    excludePaths:
+      - /search/**
+      - /users/login
+      - /items/**
+      - /hi
 
 

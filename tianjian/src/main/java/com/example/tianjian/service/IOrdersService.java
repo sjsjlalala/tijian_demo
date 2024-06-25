@@ -3,7 +3,10 @@ package com.example.tianjian.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.tianjian.entity.Orders;
 import com.example.tianjian.util.Result;
+import com.example.tianjian.vo.CidetailedreportVo;
 import com.example.tianjian.vo.UserVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -21,7 +24,11 @@ public interface IOrdersService extends IService<Orders> {
 
     Result getOrder(Integer orderId, Integer smId);
 
-    Result submit(int cidrId, int isError, String value);
+    Result submit(List<CidetailedreportVo> cidetailedreportVos);
 
-    Result submitall(int orId, String title, String content);
+    Result submitall(Integer orId, String title, String content, Integer orderId);
+
+    Result getAll(Integer orderId);
+
+    Result deleteall(Integer orId);
 }

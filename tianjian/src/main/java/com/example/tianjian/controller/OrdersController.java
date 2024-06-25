@@ -3,10 +3,12 @@ package com.example.tianjian.controller;
 
 import com.example.tianjian.service.IOrdersService;
 import com.example.tianjian.util.Result;
+import com.example.tianjian.vo.CidetailedreportVo;
 import com.example.tianjian.vo.UserVo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -38,12 +40,22 @@ public class OrdersController {
     }
 
     @PutMapping("/submit")
-    public Result submit(int cidrId,int isError,String value) {
-        return ordersService.submit(cidrId,isError,value);
+    public Result submit(@RequestBody List<CidetailedreportVo> cidetailedreportVos) {
+        return ordersService.submit(cidetailedreportVos);
     }
 
     @PutMapping("/submitall")
-    public Result submitall(int orId,String title,String content) {
-        return ordersService.submitall(orId,title,content);
+    public Result submitall(@RequestParam(required = false) Integer orderId,String title,String content ,@RequestParam(required = false)Integer orId) {
+        return ordersService.submitall(orId,title,content,orderId);
+    }
+
+    @GetMapping("/getall")
+    public Result getAll(Integer orderId) {
+        return ordersService.getAll(orderId);
+    }
+
+    @DeleteMapping("/deleteall")
+    public Result deleteall(Integer orId) {
+        return ordersService.deleteall(orId);
     }
 }
