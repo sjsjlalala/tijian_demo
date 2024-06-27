@@ -54,10 +54,10 @@
 
 <script>
 import Footer from "@/components/Footer.vue";
-import { reactive, toRefs } from "vue";
+import { onMounted, reactive, toRefs } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { inject } from 'vue';
-import { getSessionStorage,setSessionStorage } from '@/common';
+import { getSessionStorage,setSessionStorage,getCurDate } from '@/common';
 import axios from 'axios';
 //axios.defaults.baseURL = "http://localhost:8080/";
 
@@ -67,6 +67,7 @@ export default {
     const router = useRouter();
     const route = useRoute();
     const curDate = new Date();
+    const now = getCurDate();
 
     const state = reactive({
       hpId: getSessionStorage('hpId'),
@@ -74,7 +75,7 @@ export default {
       year: curDate.getFullYear(),
       month: curDate.getMonth() + 1,
       calendarArr: [],
-      selectDay: "2024-06-18", //用户选择的预约日期
+      selectDay: now, //用户选择的预约日期
     });
 
     getCalendar();
@@ -151,6 +152,10 @@ export default {
       }
       router.push({path:'/confirmOrder',query:{hpId:state.hpId,smId:state.smId,selectDay:state.selectDay,flag:1}});
     }
+
+    onMounted(() => {
+      setSessionStorage("data",state.selectDay)
+    });
 
     return {
       ...toRefs(state),

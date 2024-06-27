@@ -19,8 +19,11 @@
                     <p v-if="item.smId==5">普通女士客户-肾病套餐</p>
                     <p v-if="item.smId==6">普通女士客户-肝病套餐</p>
                 </div>
-                <div class="right" @click="cancelAppointment(item.orderId)">
+                <div v-if="item.state===1" class="right" @click="cancelAppointment(item.orderId)">
                     取消预约
+                </div>
+                <div v-else="item.state === 2" style=" color: blue;" class="right" @click="Toreportlist()">
+                    已归档
                 </div>
             </li>
         </ul>
@@ -89,6 +92,10 @@ const Toappointmentok = (id) => {
         }
     }
     router.push("/appointmentok");
+}
+
+const Toreportlist = () => {
+    router.push("/reportlist");
 }
 
 </script>
