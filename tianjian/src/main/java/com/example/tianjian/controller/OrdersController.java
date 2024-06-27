@@ -64,4 +64,8 @@ public class OrdersController {
         return ordersService.updateall(orderId);
 
     }
+    @GetMapping("/getCount")
+    public Result getCount() {
+        return ordersService.getCount();
+    }
 }

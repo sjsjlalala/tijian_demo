@@ -21,11 +21,11 @@
         <img src="../assets/img/logo.png">
     </div>
     <ul>
-        <li>
+        <li @click="toQuery ">
             <img src="../assets/img/menu01.png">
             <div class="nav-item-text">
-                <h3>免费咨询</h3>
-                <p>新型冠状病毒肺炎</p>
+                <h3>AI免费咨询</h3>
+                <p>询问健康或套餐问题</p>
             </div>
         </li>
         <li>
@@ -190,10 +190,14 @@ export default {
         function Toreportlist() {
             router.push('/reportlist');
         }
+        function toQuery() {
+            router.push('/query');
+        }
 
         return {
             toAppiontment,
-            Toreportlist
+            Toreportlist,
+            toQuery
         }
     },
     components: { Footer }

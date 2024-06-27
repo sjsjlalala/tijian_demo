@@ -4,6 +4,8 @@ import ForgetLogin from '../components/ForgetLogin.vue'
 import PhoneLogin from '../components/PhoneLogin.vue'
 import OrdersList from '@/views/OrdersList.vue'
 import OrdersContent from '@/views/OrdersContent.vue'
+import Echarts from '../components/Echarts.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -31,6 +33,11 @@ const router = createRouter({
       path:'/OrdersContent',
       name:'OrdersContent',
       component:OrdersContent
+    },
+    {
+      path: '/Echarts',
+      name: 'Echarts',
+      component:Echarts
     }
     
    

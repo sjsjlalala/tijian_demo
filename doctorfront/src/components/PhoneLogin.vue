@@ -1,8 +1,9 @@
 <template>
+  <div id="building">
   <el-card class="box-card">
     <template #header>
       <div class="card-header">
-        <span>体检系统医生端</span>
+        <span>健康守护360°智慧体检医生</span>
       </div>
     </template>
     <div class="text item">
@@ -30,6 +31,7 @@
 
     </div>
   </el-card>
+</div>
 </template>
 
 <script setup>
@@ -176,5 +178,12 @@ if (storedCountdown != null) {
 .button1 {
   display: flex;
   justify-content: center;
+}
+#building{
+background:url("../assets/R.png");
+width:100%;			
+height:100%;		
+position:fixed;
+background-size:100% 100%;
 }
 </style>

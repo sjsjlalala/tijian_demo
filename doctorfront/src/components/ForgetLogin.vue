@@ -1,8 +1,9 @@
 <template>
+  <div id="building">
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <span>体检系统医生端</span>
+          <span>健康守护360°智慧体检医生</span>
         </div>
       </template>
       <div class="text item">
@@ -37,6 +38,7 @@
         
       </div>
     </el-card>
+  </div>
   </template>
   
   <script setup>
@@ -91,7 +93,7 @@ const axios = inject('axios');
       alert('手机号码不能为空！');
       return;
     }
-    if (!state.loginForm.password) {
+    if (!state.loginForm.code) {
       alert('验证码不能为空！');
       return;
     }
@@ -204,4 +206,11 @@ if (storedCountdown != null) {
     display: flex;
     justify-content: center;
   }
+  #building{
+background:url("../assets/R.png");
+width:100%;			
+height:100%;		
+position:fixed;
+background-size:100% 100%;
+}
   </style>

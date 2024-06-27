@@ -40,4 +40,6 @@ public interface IOrdersService extends IService<Orders> {
 
     Result updateall(Integer orderId);
 
+    Result getCount();
+
 }

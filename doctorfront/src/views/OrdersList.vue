@@ -26,64 +26,16 @@
               <span>筛选</span>
             </template>
           </el-menu-item>
-          <el-menu-item index="2">
-            <el-icon>
-              <Stamp />
-            </el-icon>
-            <span>管理医院信息</span>
-          </el-menu-item>
-          <el-menu-item index="3">
+          <el-menu-item index="3" @click="dialogVisible = true">
             <el-icon>
               <Film />
             </el-icon>
-            <span>管理套餐信息</span>
+            <span>套餐信息</span>
           </el-menu-item>
         </el-menu>
 
 
       </el-col>
-
-
-
-
-      <!-- <el-aside width="260px" :style="{ transform: `translateX(${isCollapsed ? '-100%' : '0'})` }">
-        <h4>体检用户查询</h4>
-        <el-form ref="formRef" :model="state.selectForm" label-width="auto">
-          <el-form-item label="手机号码">
-            <el-input v-model="state.selectForm.userId" placeholder="手机号码"></el-input>
-          </el-form-item>
-          <el-form-item label="姓名">
-            <el-input v-model="state.selectForm.realName" placeholder="姓名"></el-input>
-          </el-form-item>
-          <el-form-item label="性别">
-            <el-radio-group v-model="state.selectForm.sex">
-              <el-radio label="1">男</el-radio>
-              <el-radio label="0">女</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="套餐类型">
-            <el-select v-model="state.selectForm.smId" placeholder="套餐类型">
-              <el-option v-for="setmeal in state.setmealArr" :key="setmeal.smId" :label="setmeal.name"
-                :value="setmeal.smId"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="体检日期">
-            <el-date-picker v-model="state.selectForm.orderDate" type="date" placeholder="体检日期" style="width: 100%"
-              format="YYYY/MM/DD" value-format="YYYY-MM-DD"></el-date-picker>
-          </el-form-item>
-          <el-form-item label="是否归档">
-            <el-radio-group v-model="state.selectForm.state">
-              <el-radio border label="1">未归档</el-radio>
-              <el-radio border label="2">已归档</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="doSelect">查询</el-button>
-            <el-button type="warning" @click="reset">重置</el-button>
-          </el-form-item>
-        </el-form>
-      </el-aside>
- -->
 
       <el-main :class="{ 'full-width': isCollapsed }">
         <el-table :data="state.ordersPageResponseDto.data" style="width: 100%">
@@ -153,6 +105,12 @@
     </template>
   </el-dialog>
 
+   <!-- 弹窗组件 -->
+   <el-dialog v-model="dialogVisible" title="echart统计" width="90%" @close="onClose">
+    <!-- 在弹窗中显示 Echarts 组件 -->
+    <echarts v-if="dialogVisible"></echarts>
+  </el-dialog>
+
 
   
 
@@ -162,10 +120,11 @@
 import { ref, reactive, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getSessionStorage,setSessionStorage} from '../common.js';
-
+import Echarts from '../components/Echarts.vue';
 import { Location, Search, Stamp, Film } from '@element-plus/icons-vue';
 import { inject } from 'vue';
 
+const dialogVisible =ref(false); 
 const axios = inject('axios');
 const router = useRouter();
 

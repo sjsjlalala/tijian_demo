@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { setSessionStorage,getSessionStorage } from '../common.js'
-const router = useRouter();
+
 // 创建axios实例
 const axiosInstance = axios.create({
 

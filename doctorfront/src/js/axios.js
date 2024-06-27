@@ -25,9 +25,11 @@ axiosInstance.interceptors.request.use(config => {
 // 响应拦截器
 axiosInstance.interceptors.response.use(response => {
   if(response.data.success == true){
+    if(response.data.data != null){
   if(response.data.data.token != null)
     setSessionStorage("token",response.data.data.token);
     console.log(getSessionStorage("token"))
+}
 }
 
   return response;

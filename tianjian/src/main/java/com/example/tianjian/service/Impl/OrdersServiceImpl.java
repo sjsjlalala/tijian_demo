@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.tianjian.dto.OrdersDto;
+import com.example.tianjian.dto.SeatmlCount;
 import com.example.tianjian.entity.*;
 import com.example.tianjian.mapper.OrdersMapper;
 import com.example.tianjian.service.ICidetailedreportService;
@@ -20,9 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+
 import javax.annotation.Resource;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.locks.Condition;
 import java.util.stream.Collectors;
 
@@ -248,6 +249,38 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
             updateById(orders);
         }
         return Result.ok("修改成功");
+    }
+
+    @Override
+    public Result getCount() {
+        List<List<SeatmlCount>> allList = new ArrayList<>();
+
+        //1.获取男士套餐及其数量
+        List<SeatmlCount> voList = new ArrayList<>();
+        List<Setmeal> maleList = setmealService.list(new QueryWrapper<Setmeal>().eq("type", 1));
+        maleList.forEach(setmeal -> {
+            Long count = ordersMapper.selectCount(new QueryWrapper<Orders>().eq("smId", setmeal.getSmId()));
+            voList.add(new SeatmlCount(setmeal.getName().substring(3, 7), count.intValue()));
+        });
+        allList.add(voList);
+
+        //2.获取女士套餐及其数量
+        List<SeatmlCount> voList2 = new ArrayList<>();
+        List<Setmeal> femaleList = setmealService.list(new QueryWrapper<Setmeal>().eq("type", 0));
+        femaleList.forEach(setmeal -> {
+            Long count = ordersMapper.selectCount(new QueryWrapper<Orders>().eq("smId", setmeal.getSmId()));
+            voList2.add(new SeatmlCount(setmeal.getName().substring(3, 7), count.intValue()));
+        });
+       allList.add(voList2);
+
+       //3.计算总套餐总数量
+        List<SeatmlCount> temp = new ArrayList<>();
+        temp.addAll(voList);
+        temp.addAll(voList2);
+        allList.add(temp);
+
+        System.out.println(allList.toString());
+        return Result.ok(allList);
     }
 
 }

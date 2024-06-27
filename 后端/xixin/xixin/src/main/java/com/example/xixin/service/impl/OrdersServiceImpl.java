@@ -87,7 +87,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
             lock.lock();
             //3.执行业务逻辑
             //查询当天是否已经有该订单
-            List<Orders> orders = ordersMapper.selectList(new QueryWrapper<Orders>().eq("hpId", order.getHpId()).eq("smId", order.getSmId()).eq("orderDate", order.getOrderDate()).eq("pay", 2));
+            List<Orders> orders = ordersMapper.selectList(new QueryWrapper<Orders>().eq("hpId", order.getHpId()).eq("smId", order.getSmId()).eq("orderDate", order.getOrderDate()).eq("pay", 2).eq("userId", order.getUserId()).eq("state",1));
             int count = orders.size();
             if (count != 0)
                 return Result.fail("当天不能重复下单同一套餐", Result.ORDER_IS_EXIST);
@@ -146,11 +146,17 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
     @Transactional
     @Override
     public Result cancelOrder(Integer orderId) {
-        Integer i = ordersMapper.cancelOrder(orderId);
+       /* Integer i = ordersMapper.cancelOrder(orderId);
         boolean remove = cireportService.remove(new QueryWrapper<Cireport>().eq("orderId", orderId));
         boolean remove1 = cidetailedreportService.remove(new QueryWrapper<Cidetailedreport>().eq("orderId", orderId));
         if (i == 0 || !remove || !remove1)
 
+            return Result.fail("取消失败", Result.ORDER_CANCEL_FAIL);*/
+
+        Orders orders = ordersMapper.selectById(orderId);
+        orders.setState(3);
+        int i = ordersMapper.updateById(orders);
+        if(i == 0)
             return Result.fail("取消失败", Result.ORDER_CANCEL_FAIL);
 
         return Result.ok("取消成功");

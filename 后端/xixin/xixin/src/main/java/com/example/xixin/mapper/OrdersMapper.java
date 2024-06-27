@@ -26,7 +26,7 @@ public interface OrdersMapper extends BaseMapper<Orders> {
     @Select("select count(*) from orders where userId = #{userId} and hpId = #{hpId} and smId = #{smId} and orderDate = #{orderDate}")
     Integer isExist(Orders order);
 
-    @Select("select count(*) from orders where hpId = #{hpId}  and orderDate = #{orderDate}")
+    @Select("select count(*) from orders where hpId = #{hpId}  and orderDate = #{orderDate} and state = 1 and pay = 2")
     Integer countByDate(Integer hpId,  LocalDate orderDate);
 
     @Delete("delete from orders where orderId = #{orderId}")

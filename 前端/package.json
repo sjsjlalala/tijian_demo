@@ -12,6 +12,7 @@
     "axios": "^1.7.2",
     "element-plus": "^2.7.5",
     "font-awesome": "^4.7.0",
+    "qs": "^6.12.1",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },

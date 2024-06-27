@@ -11,6 +11,7 @@ import com.example.tianjian.service.IDoctorService;
 import com.example.tianjian.util.JwtTool;
 import com.example.tianjian.util.RegexUtils;
 import com.example.tianjian.util.Result;
+import com.example.tianjian.util.SendSms;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -78,7 +79,12 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, Doctor> impleme
         String code = RandomUtil.randomNumbers(6);
 
         //4.保存验证码到redis set key value ex 120
-        stringRedisTemplate.opsForValue().set("login:doctor:"+phone,code,2, TimeUnit.MINUTES);
+        try {
+            SendSms.send(phone, code);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+         stringRedisTemplate.opsForValue().set("login:doctor:"+phone,code,2, TimeUnit.MINUTES);
 
         //5.发送验证码
         System.out.println("发送验证码成功,验证码为"+code);
@@ -86,7 +92,6 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, Doctor> impleme
         //6.返回ok
         return Result.ok();
     }
-
     @Override
     public Result loginByCode(String phone, String code) {
         //1.校验手机号
@@ -125,6 +130,6 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, Doctor> impleme
         }
         Doctor doctor = this.getById(phone);
         doctorMapper.updateById(doctor.setPassword(newpwd));
-        return Result.ok("修改密码成功");
+        return Result.ok(doctor);
     }
 }

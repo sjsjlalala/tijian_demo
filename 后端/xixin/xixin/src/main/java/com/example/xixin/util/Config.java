@@ -73,7 +73,7 @@ public class Config {
 
 	//通过接口公共参数return_url配置上传同步地址 
 	//同步通知地址需http://或者https://格式的完整路径，不能加?id=123这类自定义参数，get访问，用于支付完成后前端页面同步跳转
-	public static String return_url ="http://localhost:5173/payConfirm";
+	public static String return_url ="http://localhost:5174/payConfirm";
 		
 	//日志记录目录
 	public static String log_path = "D:/log.txt";

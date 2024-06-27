@@ -1,8 +1,9 @@
 <template>
+  <div id="building" >
   <el-card class="box-card">
     <template #header>
       <div class="card-header">
-        <span>体检系统医生端</span>
+        <span>健康守护360°智慧体检医生端</span>
       </div>
     </template>
     <div class="text item">
@@ -23,6 +24,7 @@
       </div>
     </div>
   </el-card>
+</div>
 </template>
 
 <script setup>
@@ -116,10 +118,13 @@ onMounted(() => {
     display: flex;
     justify-content: center;
   }
-  body {
-  background-image: url('../assets/1.png'); /* 替换为您的图片路径 */
-  background-size: cover; /* 图片大小覆盖整个容器 */
-  background-position: center; /* 图片位置居中 */
-  background-repeat: no-repeat; /* 图片不重复 */
+
+#building{
+background:url("../assets/R.png");
+width:100%;			
+height:100%;		
+position:fixed;
+background-size:100% 100%;
 }
+
 </style>

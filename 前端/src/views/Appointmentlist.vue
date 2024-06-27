@@ -25,6 +25,9 @@
                 <div v-else="item.state === 2" style=" color: blue;" class="right" @click="Toreportlist()">
                     已归档
                 </div>
+                <div v-else="item.state === 3" style=" color: red;" class="right" >
+                    已取消
+                </div>
             </li>
         </ul>
         
