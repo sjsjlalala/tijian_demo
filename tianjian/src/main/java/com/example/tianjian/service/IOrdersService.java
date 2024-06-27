@@ -24,7 +24,11 @@ public interface IOrdersService extends IService<Orders> {
 
     Result getOrder(Integer orderId);
 
-    Result submit(List<CidetailedreportVo> cd);
+
+
+
+
+    Result submit(List<CidetailedreportVo> cidetailedreportVos);
 
 
     Result submitall(Integer orId, String title, String content, Integer orderId);
@@ -33,5 +37,7 @@ public interface IOrdersService extends IService<Orders> {
 
     Result deleteall(Integer orId);
 
+
     Result updateall(Integer orderId);
+
 }

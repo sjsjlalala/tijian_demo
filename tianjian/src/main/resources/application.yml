@@ -39,6 +39,22 @@ spring:
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
+hm:
+  jwt:
+    location: classpath:hmall.jks
+    alias: hmall
+    password: hmall123
+    tokenTTL: 30m
+  auth:
+    excludePaths:
+      - /search/**
+      - /doctor/login
+      - /items/**
+      - /hi
+      - /doctor/code
+      - /doctor/loginByCode
+      - /doctor/changepwd
+
 # 数据库支持
 mybatis-plus:
   #configuration:

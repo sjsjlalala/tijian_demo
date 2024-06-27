@@ -6,6 +6,7 @@ import com.example.xixin.mapper.HospitalMapper;
 import com.example.xixin.service.IHospitalService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,10 @@ import java.util.List;
  */
 @Service
 public class HospitalServiceImpl extends ServiceImpl<HospitalMapper, Hospital> implements IHospitalService {
+
+    private OrdersServiceImpl ordersService;
+
+
 
     @Resource
     private HospitalMapper hospitalMapper;

@@ -54,11 +54,14 @@
 import { onMounted, reactive, toRefs, ref } from "vue";
 import { useRouter } from "vue-router";
 import { setSessionStorage, getSessionStorage } from "../common.js";
-import axios from "axios";
+
 import Footer from "../components/Footer.vue";
+import { inject } from 'vue';
+
 
 export default {
   setup() {
+    const axios = inject('axios');
     const isContentVisible = ref(false); // 初始时不显示内容
 
 const toggleContent = () => {

@@ -1,20 +1,25 @@
 package com.example.xixin.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.http.HttpResponse;
+import com.alipay.api.AlipayApiException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.xixin.dto.*;
 import com.example.xixin.entity.*;
 import com.example.xixin.mapper.OrdersMapper;
 import com.example.xixin.service.*;
+import com.example.xixin.util.AlipayTradePagePay;
 import com.example.xixin.util.IdCreater;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.http.HttpRequest;
 import java.sql.SQLOutput;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -46,6 +51,8 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
     private ICheckitemService checkitemService;
     @Resource
     private IOverallresultService overallresultService;
+    @Resource
+    private ISetmealService setmealService;
 
 
     @Resource
@@ -62,8 +69,9 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
         String rule = hospitalService.getRule(order.getHpId());
         String[] list = rule.split(",");
         String j = list[dayOfWeek.getValue()];
+        String alipay = null;
         int ruleStock = Integer.parseInt(j);
-
+        int id = 0;
         //2.判断是否还有空位
         Integer orderCount = ordersMapper.countByDate(order.getHpId(), order.getOrderDate());
         if (orderCount >= ruleStock)
@@ -79,7 +87,8 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
             lock.lock();
             //3.执行业务逻辑
             //查询当天是否已经有该订单
-            Integer count = ordersMapper.isExist(order);
+            List<Orders> orders = ordersMapper.selectList(new QueryWrapper<Orders>().eq("hpId", order.getHpId()).eq("smId", order.getSmId()).eq("orderDate", order.getOrderDate()).eq("pay", 2));
+            int count = orders.size();
             if (count != 0)
                 return Result.fail("当天不能重复下单同一套餐", Result.ORDER_IS_EXIST);
 
@@ -88,22 +97,12 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
             if (orderCount >= ruleStock)
                 return Result.fail("该医院当天已满", Result.ORDER_FAIL);
             //生成订单id
-            long orderId = idCreater.getNextId();
+            int orderId = (int) idCreater.getNextId();
+            id = orderId;
             //往prders表中插入订单
-            order.setOrderId((int)orderId);
+            order.setOrderId( orderId);
             order.setState(1);
             ordersMapper.insert(order);
-//            //3往cireport表中插入
-//            //3.查询套餐明细
-//            //3.1.1获取ciId集合
-//
-//            List<Integer> ciIds = setmealdetailedService.query().eq("smId", order.getSmId())
-//                    .list()
-//                    .stream()
-//                    .map(Setmealdetailed::getCiId)
-//                    .collect(Collectors.toList());
-//
-//            List<Cireport> cireports = new ArrayList<>(ciIds.size());
 
             //3.1.2查询ciIds对应的ciName
             //3.往cireport中插入数据
@@ -113,49 +112,32 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
             });
             cireportService.saveBatch(cireports1);
 
-//            List<Checkitem> checkitems = checkitemService.query().in("ciId", ciIds).list();
-//            checkitems.stream().forEach(checkitem -> {
-//                Cireport cireport = new Cireport();
-//                cireport.setCiId(checkitem.getCiId());
-//                cireport.setOrderId((int) orderId);
-//                cireport.setCiName(checkitem.getCiName());
-//                cireports.add(cireport);
-//            });
 
-            //3.1.3 插入cireport表
-
-
-            //4往checkitemdetailed表中插入
-            //4.1根据ciIds查询相应的checkitemdetailed表
-            //List<Checkitemdetailed> checkitemdetaileds = checkitemdetailedService.query().in("ciId", ciIds).list();
             //4.往cidetailedreport表中插入
             List<Cidetailedreport> cidetailedreports = cidetailedreportService.selectBySmId(order.getSmId());
             cidetailedreports.forEach(cidetailedreport -> {
                 cidetailedreport.setOrderId((int) orderId);
                 cidetailedreport.setIsError(0);
             });
+            //5.支付
+            //5.1获取金额和套餐名字
+            Setmeal setmeal = setmealService.getById(order.getSmId());
+            String name = setmeal.getName();
+            int price = setmeal.getPrice();
+
+             alipay = AlipayTradePagePay.alipay(String.valueOf(orderId), name, String.valueOf(price));
             cidetailedreportService.saveAll(cidetailedreports);
 
-            //4.3插入cidetailedreport表
-//            List<Cidetailedreport> cidrs = new ArrayList<>();
-//
-//                    checkitemdetaileds.stream().forEach(
-//                    checkitemdetailed -> {
-//                        Cidetailedreport cidetailedreport = new Cidetailedreport();
-//                        BeanUtil.copyProperties(checkitemdetailed,cidetailedreport);
-//                        cidetailedreport.setOrderId((int) orderId);
-//                        cidetailedreport.setIsError(0);
-//                        cidrs.add(cidetailedreport);
-//                    }
-//            );
-
+        } catch (AlipayApiException e) {
+            throw new RuntimeException(e);
         } finally {
             lock.unlock();
         }
 
 
         //4.返回结果
-        return Result.ok("下单成功");
+        System.out.println(id);
+        return Result.ok(alipay, (long) id);
     }
 
 
@@ -281,7 +263,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
 
     @Override
     public Result getOrdersByUserId(String userId) {
-        List<Orders> orders = ordersMapper.selectList(new QueryWrapper<Orders>().eq("userId", userId));
+        List<Orders> orders = ordersMapper.selectList(new QueryWrapper<Orders>().eq("userId", userId).eq("pay",2));
         List<OrderDetailDto> orderDetailDtos = new ArrayList<>(orders.size());
         for (Orders order : orders) {
             OrderDetailDto orderDetailDto = new OrderDetailDto();
@@ -327,6 +309,19 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
         //4.按时间排序
 
         return Result.ok(ods, (long) ods.size());
+    }
+
+    @Override
+    public Result confirmOrder(Integer out_trade_no, HttpServletResponse response) {
+        Orders order = getById(out_trade_no);
+        if(order != null ){
+            order.setPay(2);
+        }
+        if (updateById(order)) {
+
+            return Result.ok();
+        }
+        return Result.fail("确认订单失败",500);
     }
 
     private int monthOfDays(int i, int year) {

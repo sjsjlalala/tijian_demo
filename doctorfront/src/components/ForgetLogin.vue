@@ -19,7 +19,7 @@
          </el-form-item>
          <el-form-item label="验证码">
           <div style="display: flex;align-items: center;">
-            <el-input v-model="state.loginForm.password" type="text" style="width: 130px;"></el-input>
+            <el-input v-model="state.loginForm.code" type="text" style="width: 130px;"></el-input>
            <el-button type="text" @click="getCode()"
            :disabled="state.isCountingDown"
               :type="state.isCountingDown ? 'text' : 'text'">{{countdownText}}</el-button>
@@ -44,7 +44,9 @@
   import { useRouter } from 'vue-router';
   import { setSessionStorage } from '../common.js';
   
-  import axios from 'axios';
+  import { inject } from 'vue';
+
+const axios = inject('axios');
   
   const router = useRouter();
   
@@ -94,9 +96,9 @@
       return;
     }
   
-    axios.post('doctor/getDoctorByCodeByPass', state.loginForm)
+    axios.post('/api/doctor/changepwd?phone='+state.loginForm.docCode+'&newpwd='+state.loginForm.password1+'&code='+state.loginForm.code)
       .then(response => {
-        const doctor = response.data;
+        const doctor = response.data.data;
         if (doctor) {
           setSessionStorage('doctor', doctor);
           router.push('/ordersList');
@@ -119,13 +121,14 @@
 
 
 const getCode = () => {
+  axios.post('/api/doctor/code?phone='+state.loginForm.docCode)
+   .then(response => {
+     console.log(response.data.data);
+   });
   if (state.isCountingDown) return; 
   state.isCountingDown = true;
   state.countdown = 60
   detime();
-    
-
-
 }
 
 const detime = ()=>{

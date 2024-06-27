@@ -1,7 +1,5 @@
 package com.example.tianjian;
 
-import com.example.tianjian.util.JwtUtil;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest

@@ -1,5 +1,6 @@
 package com.example.xixin;
 
+
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;

@@ -1,21 +1,36 @@
 // axios.js
 import axios from 'axios';
 import { useRouter } from 'vue-router';
-
+import { setSessionStorage,getSessionStorage } from '../common.js'
 const router = useRouter();
 // 创建axios实例
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5173/",
+
   timeout: 10000,
 });
 // 请求拦截器
 axiosInstance.interceptors.request.use(config => {
-    // 添加请求拦截逻辑，例如添加token
-    return config;
-  });
+  // 从session storage获取token
+  const token = getSessionStorage("token");
+  console.log(token);
+  
+  // 如果token存在，则将其添加到Authorization头部
+  if (token !== null) {
+    config.headers.Authorization = `${token}`;
+  }
+  
+  // 返回修改后的配置对象
+  return config;
+});
 // 响应拦截器
 axiosInstance.interceptors.response.use(response => {
-  // 处理响应数据，例如对返回的数据做统一处理
+  if(response.data.token !== null)
+    setSessionStorage("token",response.data.token);
+
+    console.log(getSessionStorage("token"))
+    console.log(response.data.token)
+  
+
   return response;
 },  error => {
     console.log("l");

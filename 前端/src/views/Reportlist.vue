@@ -33,16 +33,18 @@
 
 <script setup>
 import Footer from "@/components/Footer.vue";
-import axios from "axios";
+
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { getSessionStorage,setSessionStorage } from '@/common';
 import { ref } from "vue";
+import { inject } from 'vue';
 
+const axios = inject('axios');
 const router = useRouter();
 const reportList = ref([]);
 const getReportList = () => {
-    axios.get("https://d793567f-d18f-4c92-9f2b-fdee835b8611.mock.pstmn.io/report/get").then(res => {
+    axios.get("/api/orders/getAllOrdersForDoctor?userId="+getSessionStorage("users").userId).then(res => {
         for (let i = 0; i < res.data.data.length; i++) {
             reportList.value.push(res.data.data[i]);
         }

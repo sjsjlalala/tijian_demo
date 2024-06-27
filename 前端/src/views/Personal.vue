@@ -86,10 +86,11 @@
 <script setup>
 import Footer from '../components/Footer.vue'
 import { useRouter } from "vue-router";
-import axios from 'axios';
+import { inject } from 'vue';
 import { setSessionStorage, getSessionStorage ,removeSessionStorage} from "../common.js";
 import { ref } from 'vue';
 
+const axios = inject('axios');
 let user = ref(0);
 
   if(getSessionStorage('users') !== null){

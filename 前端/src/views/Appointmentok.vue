@@ -96,8 +96,10 @@
 import { onMounted, reactive, toRefs, ref,watch } from "vue";
 import { useRouter } from "vue-router";
 import { setSessionStorage, getSessionStorage } from "../common.js";
-import axios from "axios";
 import Footer from "@/components/Footer.vue";
+import { inject } from 'vue';
+
+const axios = inject('axios');
 
 const router = useRouter();
 

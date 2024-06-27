@@ -106,7 +106,7 @@
           </el-table-column>
         </el-table>
         <el-pagination background layout="prev, pager, next, total" :total="state.ordersPageResponseDto.total  "
-          :page-size="state.ordersPageResponseDto.maxPageNum" style="margin-top: 20px" @current-change="currentChange">
+          :page-size="10" style="margin-top: 20px" @current-change="currentChange">
         </el-pagination>
       </el-main>
     </el-container>
@@ -162,9 +162,11 @@
 import { ref, reactive, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getSessionStorage,setSessionStorage} from '../common.js';
-import axios from 'axios';
-import { Location, Search, Stamp, Film } from '@element-plus/icons-vue';
 
+import { Location, Search, Stamp, Film } from '@element-plus/icons-vue';
+import { inject } from 'vue';
+
+const axios = inject('axios');
 const router = useRouter();
 
 // 使用 reactive 管理可变状态
@@ -374,6 +376,11 @@ html {
 .el-date-editor .el-input__inner:focus {
   border-color: $primary-color !important;
   outline: none;
+}
+.el-main {
+  /* 限制主区域的最大高度，使其在达到此高度时出现滚动条 */
+  max-height: calc(100vh - 200px); /* 举例：减去头部和底部高度，根据实际情况调整 */
+  overflow-y: auto; /* 当内容溢出时，自动显示垂直滚动条 */
 }
 
 //图标

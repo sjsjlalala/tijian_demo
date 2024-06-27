@@ -62,9 +62,9 @@ const submitForm = () => {
 const login = () => {
   axios.post('/api/doctor/login', state.loginForm)
     .then(response => {
-      const doctor = response.data.data;
-
-      if (doctor) {
+      console.log(response.data.success)
+      if (response.data.success == true) {
+        const doctor = response.data.data;
         setSessionStorage('doctor', doctor);
         router.push('/ordersList');
       } else {
@@ -116,4 +116,10 @@ onMounted(() => {
     display: flex;
     justify-content: center;
   }
+  body {
+  background-image: url('../assets/1.png'); /* 替换为您的图片路径 */
+  background-size: cover; /* 图片大小覆盖整个容器 */
+  background-position: center; /* 图片位置居中 */
+  background-repeat: no-repeat; /* 图片不重复 */
+}
 </style>

@@ -217,9 +217,11 @@
 <script setup>
 import { ref, reactive, onMounted,watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import axios from 'axios';
-import { getSessionStorage } from '../common.js'; // 确保路径正确
 
+import { getSessionStorage } from '../common.js'; // 确保路径正确
+import { inject } from 'vue';
+
+const axios = inject('axios');
 
 
 const router = useRouter();
@@ -255,7 +257,7 @@ await listOverallResultByOrderId();
 // 获取体检预约信息
 async function getOrdersById() {
 try {
-  orderId.value =2;
+  
   const response = await axios.get("/api/orders/getorder?orderId="+orderId.value );
       orders.value = response.data.data;
       console.log("orders",orders.value);
@@ -267,7 +269,7 @@ try {
 // 获取体检报告检查项信息
 async function listCiReport() {
 try {
-  const response = await axios.get("/api/cidetailedreport/getList?orderId=2");
+  const response = await axios.get("/api/cidetailedreport/getList?orderId="+orderId.value );
   ciReportArr.value = response.data.data;
   console.log("ciReportArr",ciReportArr.value);
 } catch (error) {
@@ -294,7 +296,8 @@ router.push({ name: 'OrdersList' });
 
 // 检查项明细验证
 function cidrCheckByBlur(ciIndex, cidrIndex) {
-const cidr = ciReportArr.value[ciIndex].cidrList[cidrIndex];
+const cidr = ciReportArr.value[ciIndex].cidetailedreports[cidrIndex];
+console.log("check cidr", ciIndex, cidrIndex, cidr)
 if (cidr.type === 1) {
   if (cidr.value !== '' && (parseFloat(cidr.value) < cidr.minrange || parseFloat(cidr.value) > cidr.maxrange)) {
     cidr.isError = 1;
@@ -332,7 +335,7 @@ const arr = cidrArr.map(cidr => ({
 
 try {
   const response = await axios.put("/api/orders/submit", arr);
-  if (response.data > 0) {
+  if (response.data.success = 'true') {
     alert("保存成功！");
     listCiReport();
   } else {

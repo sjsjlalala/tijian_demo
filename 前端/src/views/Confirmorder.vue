@@ -95,9 +95,11 @@
 <script setup>
 import { onMounted, reactive, toRefs, ref,watch } from "vue";
 import { useRouter } from "vue-router";
-import { setSessionStorage, getSessionStorage } from "../common.js";
-import axios from "axios";
+import { setSessionStorage, getSessionStorage ,setLocalStorage,getLocalStorage } from "../common.js";
 import Footer from "@/components/Footer.vue";
+import { inject } from 'vue';
+
+const axios = inject('axios');
 
 const router = useRouter();
 
@@ -135,7 +137,11 @@ function Toappointmentsuccess() {
         smId: smId
     }).then(res => {
         if (res.data.code === 200) {
-    router.push("/appointmentsuccess");
+            let routerData = router.resolve({path:'/pay',query:{ htmlData: res.data.data}})
+             // 打开新页面
+             window.location.href = routerData.href;
+             setSessionStorage("out_trade_no",res.data.total)
+            
         }
         else {
             alert(res.data.errorMsg);

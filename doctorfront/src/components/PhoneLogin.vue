@@ -37,7 +37,9 @@ import { reactive, onMounted, ref, computed,onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { setSessionStorage } from '../common.js';
 
-import axios from 'axios';
+import { inject } from 'vue';
+
+const axios = inject('axios');
 
 
 const router = useRouter();
@@ -58,18 +60,16 @@ const rules = {
   docCode: [
     { required: true, message: '手机号码不能为空', trigger: 'blur' }
   ],
-  password: [
+  code: [
     { required: true, message: '验证码不能为空', trigger: 'blur' }
   ]
 };
 
 const login = () => {
   // 表单验证逻辑现在由Element Plus自动处理，无需手动alert
-  formRef.validate(valid => {
-    if (valid) {
-      axios.post('doctor/getDoctorByCodeByPass', state.loginForm)
+  axios.post('/api/doctor/loginByCode?phone='+state.loginForm.docCode+'&code='+state.loginForm.code)
         .then(response => {
-          const doctor = response.data;
+          const doctor = response.data.data;
           if (doctor) {
             setSessionStorage('doctor', doctor);
             router.push('/ordersList');
@@ -80,8 +80,6 @@ const login = () => {
         .catch(error => {
           console.error(error);
         });
-    }
-  });
 };
 
 // 定义formRef
@@ -95,13 +93,14 @@ const countdownText = computed(() => {
 
 
 const getCode = () => {
+  axios.post('/api/doctor/code?phone='+state.loginForm.docCode)
+   .then(response => {
+     console.log(response.data.data);
+   });
   if (state.isCountingDown) return; 
   state.isCountingDown = true;
   state.countdown = 60
   detime();
-    
-
-
 }
 
 const detime = ()=>{

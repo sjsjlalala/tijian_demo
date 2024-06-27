@@ -15,6 +15,7 @@ public class Result {
     private Object data;
     private Long total;
     private Integer code;
+    private String token ;
     public static final Integer USERID_ERROR = 100;//手机号错误
     public static final Integer USERID_OR_PASSWORD_ERROR = 101;//手机号错误
     public static final Integer USER_EXIST = 102;//用户已存在
@@ -22,17 +23,26 @@ public class Result {
     public static final Integer ORDER_IS_EXIST = 104;//用户不存在
     public static final Integer ORDER_FAIL = 105;
     public static final Integer ORDER_CANCEL_FAIL = 106;//订单取消失败
+    public static final Integer ORDER_CONFIRM_SUCCESS = 888;//订单确认成功，跳转
+
+
 
     public static Result ok(){
-        return new Result(true, null, null, null,200);
+        return new Result(true, null, null, null,200,null);
     }
     public static <T> Result ok(T data){
-        return new Result(true, null, data, null,200);
+        return new Result(true, null, data, null,200,null);
+    }
+    public static <T> Result ok(T data,String token){
+        return new Result(true, null, data, null,200,token);
+    }
+    public static <T> Result ok(T data, Long total){
+        return new Result(true, null, data, total,200,null);
     }
     public static <T> Result ok(List<T> data, Long total){
-        return new Result(true, null, data, total,200);
+        return new Result(true, null, data, total,200,null);
     }
     public static Result fail(String errorMsg,Integer code){
-        return new Result(false, errorMsg, null, null,code);
+        return new Result(false, errorMsg, null, null,code,null);
     }
 }

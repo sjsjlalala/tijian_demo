@@ -8,9 +8,12 @@ import com.example.xixin.entity.Users;
 import com.example.xixin.mapper.UsersMapper;
 import com.example.xixin.service.IUsersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.xixin.util.JwtTool;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
 
 import static com.example.xixin.dto.Result.*;
 
@@ -26,6 +29,8 @@ import static com.example.xixin.dto.Result.*;
 public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements IUsersService {
     @Resource
     private UsersMapper usersMapper;
+    @Resource
+    private JwtTool jwtTool ;
     @Override
     public Result login(Users user, HttpSession session) {
         //1.查看是否有该用户
@@ -47,8 +52,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         //传回UsersDto
         UsersDto usersDto = new UsersDto();
         BeanUtil.copyProperties(users,usersDto);
-        session.setAttribute("user",usersDto);
-        return Result.ok(usersDto);
+        String token = jwtTool.createToken(Long.valueOf(users.getUserId()), Duration.ofDays(1));
+        return Result.ok(usersDto,token);
 
     }
 

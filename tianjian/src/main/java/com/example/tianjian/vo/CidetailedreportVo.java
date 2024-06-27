@@ -12,3 +12,4 @@ public class CidetailedreportVo {
     private int isError;
     private String value;
 }
+

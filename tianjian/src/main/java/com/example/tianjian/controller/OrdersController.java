@@ -57,9 +57,11 @@ public class OrdersController {
     @DeleteMapping("/deleteall")
     public Result deleteall(Integer orId) {
         return ordersService.deleteall(orId);
+
     }
     @PutMapping("/updateall")
     public Result updateall(Integer orderId) {
         return ordersService.updateall(orderId);
+
     }
 }

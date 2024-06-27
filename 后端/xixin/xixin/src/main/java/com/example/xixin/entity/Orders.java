@@ -59,4 +59,8 @@ public class Orders implements Serializable {
      */
     @TableField("state")
     private Integer state;
+
+    @TableField("pay")
+    private Integer pay;
+
 }

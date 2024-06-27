@@ -1,11 +1,15 @@
 package com.example.xixin.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import com.example.xixin.service.IOrdersService;
 import com.example.xixin.dto.Result;
 import com.example.xixin.entity.Orders;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+
+
 
 /**
  * <p>
@@ -28,7 +32,12 @@ public class OrdersController {
         return ordersService.createOrder(order);
     }
 
+    @PutMapping("/confirm")
+    public Result cancel(Integer out_trade_no,HttpServletResponse response)
+    {
 
+        return ordersService.confirmOrder(out_trade_no,response);
+    }
     @GetMapping("/getCalender")
     public Result getStock(Integer year, Integer month,Integer hpId)
     {

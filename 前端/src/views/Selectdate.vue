@@ -56,12 +56,14 @@
 import Footer from "@/components/Footer.vue";
 import { reactive, toRefs } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import axios from "axios";
+import { inject } from 'vue';
 import { getSessionStorage,setSessionStorage } from '@/common';
+import axios from 'axios';
 //axios.defaults.baseURL = "http://localhost:8080/";
 
 export default {
   setup() {
+    const axios = inject('axios');
     const router = useRouter();
     const route = useRoute();
     const curDate = new Date();

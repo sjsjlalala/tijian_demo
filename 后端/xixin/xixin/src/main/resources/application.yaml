@@ -1,15 +1,15 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/tijian?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/xixin?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
-    password: 123456
+    password: 8022
 
   data:
     redis:
-      host: 192.168.204.192
+      host: 192.168.109.128
       port: 6379
-      password: 123456
+
       lettuce:
         pool:
           max-active: 10
@@ -22,3 +22,13 @@ logging:
       example:
         xixin:
           mapper: debug
+hm:
+  jwt:
+    location: classpath:hmall.jks
+    alias: hmall
+    password: hmall123
+    tokenTTL: 30m
+  auth:
+    excludePaths:
+      - /users/login
+      - /users/register

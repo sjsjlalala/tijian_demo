@@ -21,7 +21,7 @@
                     <li>
                         <div class="indications">
                             <div class="left">
-                                <div>发生(⊙ˍ⊙)？事啦</div>
+                                <div>异</div>
                                 <p>{{e.name}}</p>
                             </div>
                             <div class="right">
@@ -79,10 +79,12 @@
 
 <script setup>
 import Footer from '@/components/Footer.vue'
-import axios from 'axios'
+
 import { getSessionStorage,setSessionStorage } from '@/common';
 import { onMounted, ref } from 'vue'
+import { inject } from 'vue';
 
+const axios = inject('axios');
 
 const item = ref(0)
 const conclusion = ref([])
@@ -91,11 +93,11 @@ const error = ref([])
 const reportId = getSessionStorage('reportId')
 
 const getReport = () => {
-axios.get('https://d793567f-d18f-4c92-9f2b-fdee835b8611.mock.pstmn.io/report/get').then(res => {
+axios.get("/api/orders/getAllOrdersForDoctor?userId="+getSessionStorage("users").userId).then(res => {
     for(let i=0;i<res.data.data.length;i++){
     if(res.data.data[i].orderId === reportId){
-    conclusion.value = res.data.data[0].overallresults;
-    report.value = res.data.data[0].map;
+    conclusion.value = res.data.data[i].overallresults;
+    report.value = res.data.data[i].map;
     console.log(conclusion.value);
     console.log(report.value);
     }

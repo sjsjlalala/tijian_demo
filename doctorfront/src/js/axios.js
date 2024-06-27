@@ -5,24 +5,30 @@ import { setSessionStorage,getSessionStorage } from '../common.js'
 const router = useRouter();
 // 创建axios实例
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5173/",
+
   timeout: 10000,
 });
 // 请求拦截器
 axiosInstance.interceptors.request.use(config => {
-  // 添加token到请求头authorization
+  // 从session storage获取token
   const token = getSessionStorage("token");
-  if(token!= null)
-    config.headers.Authorization = `Bearer ${token}`;
+  console.log(token);
   
-    // 添加请求拦截逻辑，例如添加token
-    return config;
-  });
+  // 如果token存在，则将其添加到Authorization头部
+  if (token !== null) {
+    config.headers.Authorization = `${token}`;
+  }
+  
+  // 返回修改后的配置对象
+  return config;
+});
 // 响应拦截器
 axiosInstance.interceptors.response.use(response => {
+  if(response.data.success == true){
   if(response.data.data.token != null)
     setSessionStorage("token",response.data.data.token);
-  
+    console.log(getSessionStorage("token"))
+}
 
   return response;
 },  error => {

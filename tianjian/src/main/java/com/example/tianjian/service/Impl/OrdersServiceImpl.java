@@ -16,6 +16,7 @@ import com.example.tianjian.service.IOverallresultService;
 import com.example.tianjian.util.Result;
 import com.example.tianjian.vo.CidetailedreportVo;
 import com.example.tianjian.vo.UserVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
     @Resource
     private OrdersMapper ordersMapper;
 
-    @Resource
+    @Autowired
     private UsersServiceImpl usersService;
 
     @Resource
@@ -130,27 +131,6 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
     }
 
 
-//    @Override
-//    public Result getList() {
-//        List<Orders> list = ordersMapper.selectList(new QueryWrapper<Orders>().orderByDesc("orderDate"));
-//        Long total = ordersMapper.selectCount(new QueryWrapper<Orders>());
-//        for(Orders orders : list){
-//            OrdersDto ordersDto = new OrdersDto();
-//            BeanUtil.copyProperties(orders, ordersDto);
-//            Users users = usersService.getById(orders.getUserId());
-//            ordersDto.setRealName(users.getRealName());
-//            ordersDto.setSex(users.getSex());
-//            Hospital hospital = hospitalService.getById(orders.getHpId());
-//            ordersDto.setHpName(hospital.getName());
-//            Setmeal setmeal = setmealService.getById(orders.getSmId());
-//            ordersDto.setSmName(setmeal.getName());
-//            ordersDtoList.add(ordersDto);
-//        }
-//        return Result.ok(ordersDtoList, total);
-//    }
-
-
-
     @Override
     public Result searchList(UserVo userVo, Integer pageNum, Integer pageSize) {
         // 创建分页对象
@@ -166,6 +146,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
                 .eq(userVo.getSmId() != null,"smId", userVo.getSmId())
                 .eq(userVo.getOrderDate() != null,"orderDate", userVo.getOrderDate())
                 .eq(userVo.getState() != null,"state", userVo.getState())
+                .eq("pay",2)
                 .in("userId", userIds)
                 .orderByDesc("orderDate");
         // 执行分页查询
@@ -258,6 +239,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
         return Result.ok("删除成功");
     }
 
+
     @Override
     public Result updateall(Integer orderId) {
         if(orderId!=null){
@@ -265,6 +247,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
             orders.setState(2);
             updateById(orders);
         }
-        return null;
+        return Result.ok("修改成功");
     }
+
 }

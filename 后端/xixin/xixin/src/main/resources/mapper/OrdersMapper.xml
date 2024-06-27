@@ -10,6 +10,7 @@
                 from orders
                 where hpId = #{dot.hpId}
                 and orderDate = #{dot.date}
+                and pay = 2
             </foreach>
     </select>
 </mapper>

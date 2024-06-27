@@ -38,16 +38,19 @@
 import { reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import { setSessionStorage, getSessionStorage } from "../common.js";
-import axios from "axios";
+
 import Usericon from '../components/icons/Usericon.vue';
 import Pwd from '../components/icons/Password.vue';
 //axios.defaults.baseURL = "http://localhost:8080/";
+import { inject } from 'vue';
+
+
 
 export default {
   components: { Usericon, Pwd },
   setup() {
     const router = useRouter();
-
+    const axios = inject('axios');
     const state = reactive({
       users: {
         userId: '',
