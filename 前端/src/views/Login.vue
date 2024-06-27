@@ -3,7 +3,33 @@
     <!-- 总容器 -->
     <div class="wrapper">
         <h1>体检预约-登录</h1>
-        <section>
+
+        <section v-if="flag===1">
+          <div class="reg-box" @click="change">
+            <p>密码登录</p>
+          </div>
+            <div class="input-box">
+                <i class="fa fa-user-o"></i>
+                
+                <input type="text" v-model="users.userId" placeholder="输入手机号">
+            </div>
+            <div class="input-box">
+                <i class="fa fa-lock"></i>
+                
+                <input type="password" v-model="users.password" placeholder="输入验证码">
+                <button>获取验证码</button>
+            </div>
+            <div class="reg-box">
+                <p @click="toRegister()">还没有账号？注册</p>
+                <p>忘记密码？</p>
+            </div>
+            <div class="button-box" @click="login()">登录</div>
+        </section>
+
+        <section v-else>
+          <div class="reg-box" @click="change">
+            <p>验证码登录</p>
+          </div>
             <div class="input-box">
                 <i class="fa fa-user-o"></i>
                 
@@ -52,6 +78,7 @@ export default {
     const router = useRouter();
     const axios = inject('axios');
     const state = reactive({
+      flag: 0,
       users: {
         userId: '',
         password: ''
@@ -92,10 +119,15 @@ export default {
       router.push('/register');
     }
 
+    function change(){
+      this.flag = this.flag === 0 ? 1 : 0;
+    }
+
     return {
       ...toRefs(state),
       login,
-      toRegister
+      toRegister,
+      change
     };
   },
 };
@@ -150,6 +182,7 @@ section .input-box i{
 section .input-box input{
     border: none;
     outline: none;
+    width: 90px;
 }
 
 section .reg-box{
