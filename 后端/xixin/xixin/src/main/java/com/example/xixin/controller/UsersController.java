@@ -34,4 +34,24 @@ public class UsersController {
         return Result.ok("退出成功");
     }
 
+    @RequestMapping("/loginByCode")
+    public Result loginByCode(@RequestParam("phone") String phone,@RequestParam("code") String code)
+    {
+        return usersService.loginByCode(phone,code);
+    }
+
+    /**
+     * 发送手机验证码
+     */
+    @PostMapping("/code")
+    public Result sendCode(@RequestParam("phone") String phone) {
+        return usersService.sendCode(phone);
+    }
+
+    @PostMapping("/changepwd")
+    public Result changepwd( String phone, String code, String newpwd)
+    {
+        return usersService.changepwd(phone,code,newpwd);
+    }
+
 }

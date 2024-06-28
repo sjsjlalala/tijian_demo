@@ -29,7 +29,7 @@
           <p @click="toRegister()">还没有账号？注册</p>
           <p>忘记密码？</p>
         </div>
-        <div class="button-box" @click="login()">登录</div>
+        <div class="button-box" @click="loginByCode()">登录</div>
       </section>
 
       <section v-else>
@@ -48,7 +48,7 @@
         </div>
         <div class="reg-box">
           <p @click="toRegister()">还没有账号？注册</p>
-          <p>忘记密码？</p>
+          <p @click="ForgetLogin()">忘记密码？</p>
         </div>
         <div class="button-box" @click="login()">登录</div>
       </section>
@@ -103,7 +103,7 @@ function login() {
     .then((response) => {
       const code = response.data.code;
       const users = response.data.data;
-      if (code === '200') {
+      if (code === 200) {
         setSessionStorage('users', users);
         console.log(getSessionStorage('users'));
         router.push('/index');
@@ -132,9 +132,41 @@ const countdownText = computed(() => {
 }
 )
 
+const loginByCode = () => {
+// 表单验证
+if (!state.users.userId) {
+    alert('手机号码不能为空！');
+    return;
+  }
+  if (!state.users.code) {
+    alert('验证码不能为空！');
+    return;
+  }
+
+  // 登录
+  axios.post('/api/users/loginByCode?phone='+state.users.userId+'&code='+state.users.code)
+    .then((response) => {
+      const code = response.data.code;
+      const users = response.data.data;
+      if (code === 200) {
+        setSessionStorage('users', users);
+        console.log(getSessionStorage('users'));
+        router.push('/index');
+      } else {
+        const message = response.data.errorMsg;
+        alert(message);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+}
+
+
 
 const getCode = () => {
-  axios.post('/api/users/code?phone='+state.users.code)
+  axios.post('/api/users/code?phone='+state.users.userId)
    .then(response => {
      console.log(response.data.data);
    });
@@ -142,6 +174,10 @@ const getCode = () => {
   state.isCountingDown = true;
   state.countdown = 60
   detime();
+}
+
+const ForgetLogin = () => {
+  router.push('/forgetLogin');
 }
 
 const detime = ()=>{

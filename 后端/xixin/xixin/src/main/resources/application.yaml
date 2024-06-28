@@ -32,3 +32,6 @@ hm:
     excludePaths:
       - /users/login
       - /users/register
+      - /users/code
+      - /users/loginByCode
+      - /users/changepwd

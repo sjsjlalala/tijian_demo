@@ -18,6 +18,7 @@ import report from '../views/Report.vue'
 import pay from '../views/Pay.vue'
 import PayConfirm from '@/views/PayConfirm.vue'
 import Query from '../views/Query.vue'
+import forgetLogin from '../views/ForgetLogin.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -115,6 +116,11 @@ const router = createRouter({
       path: '/query',
       name:'query',
       component: Query
+    },
+    {
+      path: '/forgetLogin',
+      name:'forgetLogin',
+      component: forgetLogin
     }
   ]
 })

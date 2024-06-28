@@ -18,4 +18,10 @@ public interface IUsersService extends IService<Users> {
     Result login(Users user, HttpSession session);
 
     Result register(Users user);
+
+    Result loginByCode(String phone, String code);
+
+    Result sendCode(String phone);
+
+    Result changepwd(String phone, String code, String newpwd);
 }
